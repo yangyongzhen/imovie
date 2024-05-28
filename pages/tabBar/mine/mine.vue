@@ -4,26 +4,31 @@
 		<view>
 			<view class="top">
 				<view class="center">
-					<view class="center_top">
-						<view class="center_img" >
-							<!-- 这里可以放自己的静态头像 -->
-							<image src="/static/me.jpg"></image>
-							<!-- <open-data type="userAvatarUrl" class="user_head"></open-data> -->
-						</view>
-						<view class="center_info" >
-							<view class="center_name">
-								<!-- 这里可以放自己的名称图片 -->
-								<view>张三</view>
-							</view>
-							<view class="center_vip">
-								<image class="rank_icon" src="/static/vip.png" />
-								<view class="vip_text">
-									<text>普通会员</text>
-								</view>
-							</view>
+					<view v-if="isLoggedIn">
+						<view class="center_top">
+							<view class="center_img" >
+								<!-- 这里可以放自己的静态头像 -->
+								<image src="/static/me.jpg"></image>
+								<!-- <open-data type="userAvatarUrl" class="user_head"></open-data> -->
+						    </view>
+						    <view class="center_info" >
+							      <view class="center_name">
+							      	特立独行的猫
+							      </view>
+							      <view class="center_vip">
+							      	<uni-icons type="vip" size="20"></uni-icons>
+							      	<view class="vip_text">
+							      		<text>普通会员</text>
+							      	</view>
+							      </view>
+							      <!-- 其他个人中心内容 -->
+							    </view>
+							
 						</view>
 					</view>
+					<view v-else class="loginButton" @click="onLoginClick">登录</view>
 				</view>
+				
 			</view>
 		</view>
 
@@ -39,7 +44,9 @@
 			<uni-list>
 				<uni-list-item showArrow title="我的消息" ></uni-list-item>
 				<uni-list-item showArrow title="意见反馈" ></uni-list-item>
-				<uni-list-item showArrow title="关于我们" ></uni-list-item>
+				<uni-list-item showArrow title="分享链接" @click.native="onShareClick($event,1)" link></uni-list-item>
+				<uni-list-item showArrow title="关于我们" link to="/pages/about/about?item=2"></uni-list-item>
+				<!-- <uni-list-item showArrow title="关于我们" link="navigateTo" :to="'/pages/about/about?item=1'"></uni-list-item> -->
 			</uni-list>
 		</view>
 	</view>
@@ -49,7 +56,8 @@
 	export default {
 		data() {
 			return {
-				
+				isLoggedIn: false,
+				userInfo: {}
 			}
 		},
 		computed: {
@@ -59,6 +67,29 @@
 			
 		},
 		methods: {
+				onLoginClick() {
+			      // 跳转至登录页面
+			      //uni.navigateTo({ url: '/pages/login/login' });
+			    },
+				onShareClick($event,args){
+					console.log($event);
+					console.log("onShareClick");
+					uni.share({
+						provider: "weixin",
+						scene: "WXSceneSession",
+						type: 0,
+						href: "http://uniapp.dcloud.io/",
+						title: "分享的标题",
+						summary: "分享的内容",
+						imageUrl: "https://qiniu-web-assets.dcloud.net.cn/unidoc/zh/uni@2x.png",
+						success: function (res) {
+							console.log("success:" + JSON.stringify(res));
+						},
+						fail: function (err) {
+							console.log("fail:" + JSON.stringify(err));
+						}
+					});
+				}
 			
 		}
 	};
@@ -66,41 +97,43 @@
 
 <style scoped lang="scss">
 	Page {
-		font-size: 14px;
+		font-size: 14rpx;
 	}
 
 	.top {
 		width: 100%;
-		height: 130px;
+		height: 200rpx;
 		// background: #23EBB9;
 		background: #2979ff;
-		padding-top: 15px;
+		padding-top: 30rpx;
 		position: relative;
 	}
 
 	.center {
 		width: 95%;
-		height: 100px;
-		background: #2979ff;
+		height: 150rpx;
+		background: #55aaff;
 		display: flex;
 		flex-direction: column;
+		justify-content: center; /* 水平居中 */
+		align-items: center; /* 垂直居中 */
 		margin: 0 auto;
-		border-radius: 5px;
+		border-radius: 5rpx;
 	}
 
 	.center_top {
 		display: flex;
 		flex-direction: row;
-		width: 80%;
-		height: 80px;
+		width: 90%;
+		height: 80rpx;
 		margin: 0 auto;
 		margin-top: 20rpx;
-		border-bottom: 1px solid #2979ff;
+		border-bottom: 1rpx solid #5555ff;
 	}
 
 	.center_img {
-		width: 66px;
-		height: 66px;
+		width: 80rpx;
+		height: 80rpx;
 		border-radius: 50%;
 		overflow: hidden;
 	}
@@ -108,7 +141,6 @@
 	.center_img image {
 		width: 100%;
 		height: 100%;
-		border-radius: 50%;
 	}
 
 	.center_img .user_head {
@@ -120,11 +152,12 @@
 		display: flex;
 		flex-direction: column;
 		margin-top: 20rpx;
-		margin-left: 30px;
+		margin-left: 30rpx;
 	}
 
 	.center_name {
-		font-size: 18px;
+		font-size: 20rpx;
+		width: 120rpx;
 	}
 
 	.center_phone {
@@ -142,51 +175,52 @@
 
 	.center_rank {
 		width: 50%;
-		height: 35px;
+		height: 35rpx;
 		display: flex;
 		flex-direction: row;
 	}
 
 	.rank_text {
-		height: 35px;
-		line-height: 35px;
+		height: 35rpx;
+		line-height: 35rpx;
 		margin-left: 10rpx;
 		color: #AAAAAA;
 	}
 
 	.center_vip image {
-		width: 25px;
-		height: 25px;
+		width: 25rpx;
+		height: 25rpx;
 		margin-top: 15rpx;
 	}
 
 	.vip_icon {
-		width: 25px;
-		height: 25px;
-		margin-top: -10rpx;
+		width: 25rpx;
+		height: 25rpx;
+		margin-top: -5rpx;
 	}
 
 	.vip_text {
-		margin-top: -55rpx;
-		margin-left: 50rpx;
+		font-size: 18rpx;
+		margin-top: -30rpx;
+		margin-left: 40rpx;
 		color: #AAAAAA;
 	}
 
 	.center_rank image {
-		width: 35px;
-		height: 35px;
+		width: 35rpx;
+		height: 35rpx;
 	}
 
 	.center_score {
 		width: 50%;
-		height: 35px;
+		height: 35rpx;
 		display: flex;
 		flex-direction: row;
 	}
 
 	.center_score image {
-		width: 35px;
-		height: 35px;
+		width: 35rpx;
+		height: 35rpx;
 	}
 
 	.gif-wave {
@@ -336,5 +370,16 @@
 			right: 20rpx;
 			transform: translateY(-50%);
 		}
+	}
+	
+	.loginButton {
+	  padding: 20rpx 60rpx;
+	  width: 30%;
+	  background-color: #ffffff; /* 设置背景颜色为蓝色 */
+	  color: #00aa00; /* 设置文本颜色为白色 */
+	  font-size: 24rpx; /* 设置字体大小为 16px */
+	  text-align: center;
+	  border-radius: 35rpx; /* 设置圆角 */
+	  cursor: pointer; /* 设置鼠标样式为指针 */
 	}
 </style>

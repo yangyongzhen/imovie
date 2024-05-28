@@ -11,18 +11,7 @@
 				
 			</swiper>
 		</view>
-		<uni-card>
-			这是一个uni-card.
-		</uni-card>
-		<uni-badge text="1"></uni-badge>
-		<uni-badge text="3" type="primary" :inverted="true"></uni-badge>
-		
-		<view class="uni-flex uni-row">
-		                <view class="flex-item uni-bg-red">A</view>
-		                <view class="flex-item uni-bg-green">B</view>
-		                <view class="flex-item uni-bg-blue">C</view>
-		            </view>
-		</view>
+	</view>
 </template>
 
 <script>

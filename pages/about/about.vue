@@ -18,7 +18,7 @@
 					</view>
 					<view class="source-cell">
 						<text space="nbsp">2. </text>
-						<u-link class="link" :href="'https://github.com/dcloudio/hello-uniapp'" :text="'https://github.com/dcloudio/hello-uniapp'"></u-link>
+						<uni-link href="https://uniapp.dcloud.io/" text="https://uniapp.dcloud.io/"></uni-link>
 					</view>
 				</view>
 			</view>
@@ -42,7 +42,9 @@
 				version: ''
 			}
 		},
-		onLoad() {
+		onLoad(params) {
+			console.log('about onload');
+			console.log(params);
 			// #ifdef APP-PLUS
 			this.version = plus.runtime.version;
 			uni.getProvider({
@@ -81,8 +83,9 @@
 			// #endif
 		},
 		methods: {
-			// #ifdef APP-PLUS
+			
 			save() {
+				// #ifdef APP-PLUS
 				uni.showActionSheet({
 					itemList: ['保存图片到相册'],
 					success: () => {
@@ -99,6 +102,7 @@
 						});
 					}
 				});
+				// #endif
 			},
 			share(e) {
 				if (this.providerList.length === 0) {
@@ -137,7 +141,6 @@
 					}
 				})
 			}
-			// #endif
 		}
 	}
 </script>
