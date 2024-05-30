@@ -22,8 +22,8 @@ export function createApp() {
 import { $http } from './utils/http.js'
 uni.$http = $http
 // 配置请求根路径
-$http.baseUrl = 'https://yyz.cn'
- 
+$http.baseUrl = 'https://api.douban.com/v2'
+uni.$apiKey = '0ab215a8b1977939201640fa14c66bab'
 // 请求开始之前做一些事情
 $http.beforeRequest = function (options) {
   uni.showLoading({

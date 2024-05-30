@@ -13,6 +13,11 @@ class Request {
     this.beforeRequest = null
     this.afterRequest = null
   }
+  
+   // 添加对header的支持
+    _mergeHeaders(customHeader = {}) {
+      return Object.assign({}, this.header, customHeader); // 合并默认header和自定义header
+    }
 
   get(url, data = {}) {
     this.method = 'GET'
@@ -21,10 +26,11 @@ class Request {
     return this._()
   }
 
-  post(url, data = {}) {
+  post(url, data = {},header = {}) {
     this.method = 'POST'
     this.url = this.baseUrl + url
     this.data = data
+	this.header = this._mergeHeaders(header) // 合并header
     return this._()
   }
 

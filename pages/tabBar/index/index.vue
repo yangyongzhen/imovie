@@ -10,12 +10,13 @@
 				</swiper-item>
 				
 			</swiper>
+			<uni-notice-bar scrollable="true" text="这里是滚动显示的公告内容" speed:='30' style="margin-top: 5rpx;"></uni-notice-bar>
 		</view>
 	</view>
 </template>
 
 <script>
-	import { getSwiperList } from '@/api/home.js';
+	import { getSwiperList, getTop250,getNowHot } from '@/api/home.js';
 	export default {
 		data() {
 			return {
@@ -59,7 +60,16 @@
 			getSwiperList().then(item => {
 				this.swiperList = item;
 			});
-			console.log(this.swiperList)
+			getTop250(0,5).then(item => {
+				//this.swiperList = item;
+			});
+			
+			getNowHot(0,2,"郑州").then(result => {
+				//this.swiperList = item;
+				console.log("getNowHot,result:");
+				console.log(result);
+			});
+			
 		}
 	}
 </script>

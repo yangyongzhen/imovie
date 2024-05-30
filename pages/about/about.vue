@@ -2,23 +2,27 @@
 	<view class="about">
 		<view class="content">
 			<view class="qrcode">
-				<image src="https://img.cdn.aliyun.dcloud.net.cn/guide/uniapp/app_download.png" @longtap="save"></image>
-				<text class="tip">扫码体验uni-app</text>
+				<image src="/static/qrcode.png" @longtap="save"></image>
+				<text class="tip">扫码关注我的公众号[猫青年]</text>
 			</view>
 			<view class="desc">
-				<text class="code">uni-app</text>
-				是一个使用 <text class="code">Vue.js</text> 开发跨平台应用的前端框架。
+				<text class="code">iMovie</text>
+				是一个使用 <text class="code">Vue.js</text> 开发跨平台影视类应用。
 			</view>
 			<view class="source">
 				<view class="title">本示例源码获取方式：</view>
 				<view class="source-list">
 					<view class="source-cell">
 						<text space="nbsp">1. </text>
-						<text>下载 HBuilderX，新建 uni-app 项目时选择 <text class="code">Hello uni-app</text> 模板。</text>
+						<text>下载 HBuilderX，新建 uni-app 项目时选择 <text class="code">我的项目</text> 模板。</text>
 					</view>
 					<view class="source-cell">
-						<text space="nbsp">2. </text>
-						<uni-link href="https://uniapp.dcloud.io/" text="https://uniapp.dcloud.io/"></uni-link>
+						<text space="nbsp">2. 我的博客:</text>
+						<uni-link href="https://blog.csdn.net/qq8864" text="https://blog.csdn.net/qq8864/"></uni-link>
+					</view>
+					<view class="source-cell">
+						<text space="nbsp">3. 源码资源:</text>
+						<uni-link href="https://download.csdn.net/download/qq8864/89377440" text="链接地址"></uni-link>
 					</view>
 				</view>
 			</view>
@@ -153,7 +157,7 @@
 
 	page {
 		min-height: 100%;
-		background-color: #FFFFFF;
+		background-color: #F4F4F4;
 	}
 
 	image {

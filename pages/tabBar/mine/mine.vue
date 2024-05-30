@@ -16,7 +16,7 @@
 							      	特立独行的猫
 							      </view>
 							      <view class="center_vip">
-							      	<uni-icons type="vip" size="20"></uni-icons>
+							      	<uni-icons type="vip" size="14"></uni-icons>
 							      	<view class="vip_text">
 							      		<text>普通会员</text>
 							      	</view>
@@ -34,7 +34,7 @@
 
 		<!-- 统计 -->
 		<view class="count">
-			<view class="cell"> 8 <text style="color: #AAAAAA;">收藏影视</text> </view>
+			<view class="cell"> 8  <text style="color: #AAAAAA;">收藏影视</text> </view>
 			<view class="cell"> 14 <text style="color: #AAAAAA;">历史记录</text> </view>
 			<view class="cell"> 18 <text style="color: #AAAAAA;">关注信息</text> </view>
 			<view class="cell"> 84 <text style="color: #AAAAAA;">我的足迹</text> </view>
@@ -56,7 +56,7 @@
 	export default {
 		data() {
 			return {
-				isLoggedIn: false,
+				isLoggedIn: true,
 				userInfo: {}
 			}
 		},
@@ -111,7 +111,7 @@
 
 	.center {
 		width: 95%;
-		height: 150rpx;
+		height: 160rpx;
 		background: #55aaff;
 		display: flex;
 		flex-direction: column;
@@ -123,17 +123,17 @@
 
 	.center_top {
 		display: flex;
+		min-width: 350rpx; 
 		flex-direction: row;
-		width: 90%;
-		height: 80rpx;
-		margin: 0 auto;
-		margin-top: 20rpx;
+		//background: #ffaa7f;
+		height: 100rpx;
+		margin-top: 0rpx;
 		border-bottom: 1rpx solid #5555ff;
 	}
 
 	.center_img {
-		width: 80rpx;
-		height: 80rpx;
+		width: 90rpx;
+		height: 90rpx;
 		border-radius: 50%;
 		overflow: hidden;
 	}
@@ -152,12 +152,11 @@
 		display: flex;
 		flex-direction: column;
 		margin-top: 20rpx;
-		margin-left: 30rpx;
+		margin-left: 20rpx;
 	}
 
 	.center_name {
-		font-size: 20rpx;
-		width: 120rpx;
+		font-size: 14rpx;
 	}
 
 	.center_phone {
@@ -188,20 +187,20 @@
 	}
 
 	.center_vip image {
-		width: 25rpx;
-		height: 25rpx;
-		margin-top: 15rpx;
+		width: 20rpx;
+		height: 20rpx;
+		margin-top: 10rpx;
 	}
 
 	.vip_icon {
 		width: 25rpx;
 		height: 25rpx;
-		margin-top: -5rpx;
+		margin-top: 5rpx;
 	}
 
 	.vip_text {
-		font-size: 18rpx;
-		margin-top: -30rpx;
+		font-size: 14rpx;
+		margin-top: -33rpx;
 		margin-left: 40rpx;
 		color: #AAAAAA;
 	}

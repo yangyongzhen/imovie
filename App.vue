@@ -9,8 +9,8 @@
 		onHide: function() {
 			console.log('App Hide')
 		},
-		onError:function(){
-			console.log('App Error')
+		onError:function(ex){
+			console.log('App Error:'+ex)
 		}
 	}
 </script>
