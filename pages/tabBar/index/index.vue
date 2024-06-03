@@ -16,28 +16,28 @@
 				<view class="title-item">
 					影院热映
 				</view>
-				<view>
+				<view class="title-more">
 					查看更多 >
 				</view>
 			</view>
 			 <scroll-view
-			     scroll-x
-			    :scroll-y="false"
+			    :scroll-x="true"
 			    :show-scrollbar="false"
 			    class="scroll"
 			  >
-			    <uni-grid :column="4" :show-border="false">
-			      <uni-grid-item
-			        v-for="(item, index) in hotList"
+			  <view class="moive-box">
+			        <view  v-for="(item, index) in hotList"
 			        :key="index"
-			        @click="goToDetail(item.id)"
-			      >
-			        <view class="grid-item">
-			          <image :src="item.imageUrl" mode="aspectFill" />
-			          <view class="grid-item-title">{{ item.title }}</view>
+			        @click="goToDetail(item.id)" class="moive-item">
+			          <image :src="item.imageUrl" mode="heightFix" />
+			          <view class="moive-item-title">{{ item.title }}</view>
+					  <view class="moive-rate">
+					  	<uni-rate disabled="true" :value="item.rate/2" size=14 active-color="#D81E06" color="#DADADA">
+					  	</uni-rate>
+					  	<text class="moive-rate-t">{{item.rate}}</text>
+					  </view>
 			        </view>
-			      </uni-grid-item>
-			    </uni-grid>
+			  </view>  
 			  </scroll-view>
 		</view>
 	</view>
@@ -78,6 +78,13 @@
 						  imageUrl: '/static/grid/4.jpg',
 						  title: '标题4',
 						  description: '描述4',
+						},
+						,
+						{
+						  id: 5,
+						  imageUrl: '/static/grid/5.jpg',
+						  title: '标题5',
+						  description: '描述5',
 						}
 						]
 			}
@@ -158,26 +165,51 @@
 		padding-right: 10rpx;
 	}
 	.title-item{
-		
+		font-weight: bold;
+	}
+	.title-more{
+		 color: #00aaff;
 	}
 	
 	.scroll{
-		height:300rpx;
+		height:320rpx;
 		width: 100%;
+		white-space: nowrap;
+		margin-top:15rpx;
 	}
 	
-	.grid-item {
+	.moive-box{
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		padding-left: 10rpx;
+		padding-right: 10rpx;
+	}
+	
+	.moive-item {
 	  display: flex;
 	  flex-direction: column;
 	  align-items: center;
 	  justify-content: center;
-	  width: 150rpx;
-	  height: 280rpx;
+	  width: 200rpx;
+	  height: 320rpx;
+	  margin-right: 22rpx;
+	}
+	.moive-item-title {
+	  color: #606266;
+	  font-size: 10rpx;
+	  margin-top: 10rpx;
+	}
+	.moive-rate {
+		height: 40rpx;
+		line-height: 40rpx;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 15rpx;
 	}
 	
-	.grid-item-title {
-	  color: #606266;
-	  font-size: 12rpx;
-	  margin-top: 10rpx;
+	.moive-rate-t {
+		margin-right: 4rpx;
 	}
 </style>
