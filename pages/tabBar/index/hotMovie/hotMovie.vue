@@ -21,15 +21,19 @@
 </template>
 
 <script>
+	import { getNowHot } from '@/api/home.js';
 	export default {
 		
 		data() {
-			return {
+			return {	
+				loadStatu: false, // loading是否显示
+				listStatus: 'loading', // loading状态
 				contentText: {
 					contentdown: "加载更多",
 					contentrefresh: "正在加载...",
 					contentnomore: "我是有底线的"
 				},
+				pageNum: 1, // 电影列表初始页数
 				movieInfo: [], // 电影列表
 				hotList: [
 				        {
@@ -93,6 +97,17 @@
 					return
 				}
 				that.listStatus = 'loading'
+				console.log('page:'+this.pageNum);
+				getNowHot(this.pageNum,10,"郑州").then(result => {
+					//this.swiperList = item;
+					//that.loadStatu = false
+					this.listStatus = "more";
+					this.pageNum++;
+					console.log("getNowHot,result:");
+					console.log(result);
+				
+					//this.hotList = result; 
+				});
 			}
 		}
 	}

@@ -20,6 +20,7 @@
 					查看更多 >
 				</view>
 			</view>
+			
 			 <scroll-view
 			    :scroll-x="true"
 			    :show-scrollbar="false"
@@ -39,6 +40,33 @@
 			        </view>
 			  </view>  
 			  </scroll-view>
+			  <view class="title">
+			  	<view class="title-item">
+			  		豆瓣热门
+			  	</view>
+			  	<view class="title-more" @click="goToMore(1)">
+			  		查看更多 >
+			  	</view>
+			  </view>
+			  <scroll-view
+			     :scroll-x="true"
+			     :show-scrollbar="false"
+			     class="scroll"
+			   >
+			   <view class="movie-box">
+			         <view  v-for="(item, index) in hotList"
+			         :key="index"
+			         @click="goToDetail(item.id)" class="movie-item">
+			           <image :src="item.imageUrl" mode="heightFix" />
+			           <view class="movie-item-title">{{ ellipsis(item.title) }}</view>
+			  					  <view class="movie-rate">
+			  					  	<uni-rate :readonly="true" :value="item.rate/2" size=12 active-color="#ffaa00" color="#DADADA">
+			  					  	</uni-rate>
+			  					  	<text class="movie-rate-t">{{item.rate}}</text>
+			  					  </view>
+			         </view>
+			   </view>  
+			   </scroll-view>
 		</view>
 	</view>
 </template>
@@ -132,7 +160,7 @@
 				//this.swiperList = item;
 				console.log("getNowHot,result:");
 				console.log(result);
-				//this.hotList = result; 
+				this.hotList = result.list; 
 			});
 		
 			
