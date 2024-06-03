@@ -55,6 +55,7 @@ export const getTop250 = async (start,count) => {
 export const getNowHot = async (start,count,city) => {
   try {
 	console.log('getNowHot request');
+	let hotList = [];
     const response = await uni.$http.post('/movie/in_theaters',{
 		apikey: uni.$apiKey,city:city,start:start,count:count});
 	
@@ -67,7 +68,16 @@ export const getNowHot = async (start,count,city) => {
       });
       return [];
     }
-    return response.data;
+	for (let i =0; i < response.data.subjects.length; i++) {
+	 let hotItem = {
+		id: i, // 设置id
+		imageUrl:response.data.subjects[i].images.small,
+		title: response.data.subjects[i].title, // 设置标题
+	  };
+	  // 将新对象添加到hotList数组中
+	  hotList.push(hotItem);
+	}
+    return hotList;
   } catch (error) {
     console.error('Network request failed:', error);
     uni.showToast({

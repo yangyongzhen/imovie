@@ -24,7 +24,16 @@
 				"navigationBarTitleText": "关于"
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/tabBar/index/hotMovie/hotMovie",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "影院热映",
+                "enablePullDownRefresh": true
+            }
+            
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",

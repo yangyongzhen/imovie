@@ -66,8 +66,17 @@ var dateUtils = {
 	}
 };
 
+function ellipsis(value){
+	if (!value) return '';
+	if (value.length > 7) {
+		return value.slice(0, 6) + '...'
+	}
+	return value
+}
+
 export {
 	formatTime,
 	formatLocation,
-	dateUtils
+	dateUtils,
+	ellipsis
 }
