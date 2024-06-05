@@ -30,7 +30,7 @@
 			        <view  v-for="(item, index) in hotList"
 			        :key="index"
 			        @click="goToDetail(item.id)" class="movie-item">
-			          <image :src="item.imageUrl" mode="heightFix" />
+			          <image :src="item.cover" mode="heightFix" />
 			          <view class="movie-item-title">{{ ellipsis(item.title) }}</view>
 					  <view class="movie-rate">
 					  	<uni-rate :readonly="true" :value="item.rate/2" size=12 active-color="#ffaa00" color="#DADADA">
@@ -57,7 +57,7 @@
 			         <view  v-for="(item, index) in hotList"
 			         :key="index"
 			         @click="goToDetail(item.id)" class="movie-item">
-			           <image :src="item.imageUrl" mode="heightFix" />
+			           <image class="movie-item-img" :src="item.cover" mode="heightFix" />
 			           <view class="movie-item-title">{{ ellipsis(item.title) }}</view>
 			  					  <view class="movie-rate">
 			  					  	<uni-rate :readonly="true" :value="item.rate/2" size=12 active-color="#ffaa00" color="#DADADA">
@@ -160,7 +160,7 @@
 				//this.swiperList = item;
 				console.log("getNowHot,result:");
 				console.log(result);
-				this.hotList = result.list; 
+				this.hotList = result.data; 
 			});
 		
 			
@@ -244,6 +244,10 @@
 	  width: 200rpx;
 	  height: 330rpx;
 	  margin-right: 22rpx;
+	}
+	
+	.movie-item-img {
+		border-radius: 5rpx;
 	}
 	.movie-item-title {
 	  color: #606266;

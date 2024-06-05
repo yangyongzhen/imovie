@@ -74,9 +74,17 @@ function ellipsis(value){
 	return value
 }
 
+// 图片防盗链问题解决
+function attachImageUrl(srcUrl) {
+	if (srcUrl !== undefined) {
+	  return srcUrl.replace(/http\w{0,1}:\/\/p/g, 'https://images.weserv.nl/?url=p')
+	}
+}
+
 export {
 	formatTime,
 	formatLocation,
 	dateUtils,
+	attachImageUrl,
 	ellipsis
 }

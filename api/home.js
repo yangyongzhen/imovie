@@ -3,8 +3,8 @@
 export const getSwiperList = async () => {
   try {
 	console.log('getSwiperList request');
-    const response = await uni.$http.get('/api/v1/home/swiperdata');
-	console.log(response.data.list);
+    const response = await uni.$http.get('/swiperdata');
+	console.log(response.data.data);
     if (response.statusCode !== 200) {
       uni.showToast({
         title: '数据请求失败! ',
@@ -13,7 +13,7 @@ export const getSwiperList = async () => {
       });
       return [];
     }
-    return response.data.list;
+    return response.data.data;
   } catch (error) {
     console.error('Network request failed:', error);
     uni.showToast({
@@ -55,7 +55,8 @@ export const getTop250 = async (start,count) => {
 export const getNowHot = async (start,count,city) => {
   try {
 	console.log('getNowHot request');
-    const response = await uni.$http.post('/movie/in_theaters',{
+	//const response = await uni.$http.post('/movie/in_theaters',{
+    const response = await uni.$http.post('/hotmovie',{
 		apikey: uni.$apiKey,city:city,start:start,count:count});
 	
 	console.log(response);

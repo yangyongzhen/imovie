@@ -6,7 +6,7 @@
 			    class="scroll">
 			<view class="movie-box">
 				<view v-for="(item, index) in hotList" :key="index" class="movie-item">
-					<image :src="item.cover"  mode="heightFix"></image>
+					<image class="movie-item-img" :src="item.cover"  mode="heightFix"></image>
 					 <view class="movie-item-title">{{ ellipsis(item.title) }}</view>
 						<view class="movie-rate">
 							<uni-rate :readonly="true" :value="item.rate/2" size=12 active-color="#ffaa00" color="#DADADA">
@@ -105,10 +105,20 @@
 					this.pageNum++;
 					console.log("getNowHot,result:");
 					console.log(result);
-				
+					that.hotList = that.hotList.concat(result.data);
+					that.listStatus = 'loading'
 					//this.hotList = result; 
 				});
 			}
+		},
+		mounted() {
+			console.log("mounted")
+			getNowHot(0,20,"郑州").then(result => {
+				//this.swiperList = item;
+				console.log("getNowHot,result:");
+				console.log(result);
+				this.hotList = result.data; 
+			});
 		}
 	}
 </script>
@@ -145,6 +155,9 @@
 	  width: 220rpx;
 	  height: 350rpx;
 	  margin-right: 22rpx;
+	}
+	.movie-item-img {
+		border-radius: 5rpx;
 	}
 	.movie-item-title {
 	  color: #606266;

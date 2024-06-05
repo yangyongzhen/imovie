@@ -32,9 +32,9 @@ export function mockTest(){
 	
 	const data2 = Mock.mock(uni.$http.baseUrl+'/movie/in_theaters','post',{
 	        // 属性 list 的值是一个数组，其中含有3个元素
-	        'list|10': [{
+	        'data|10': [{
 	            'id|+1': 1,
-	            'imageUrl|+1': ['/static/hot/1.jpg',
+	            'cover|+1': ['/static/hot/1.jpg',
 				 '/static/hot/2.jpg', 
 				 '/static/hot/3.jpg', 
 				 '/static/hot/4.jpg', 
