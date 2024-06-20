@@ -28,7 +28,7 @@ export const getSwiperList = async () => {
 export const getTop250 = async (start,count) => {
   try {
 	console.log('getTop250 request');
-    const response = await uni.$http.post('/movie/top250', {apikey: uni.$apiKey,
+    const response = await uni.$http.post('/topmovie', {
 	start:start,count:count},{'Content-Type': 'application/x-www-form-urlencoded'});
 	console.log(response);
     if (response.statusCode !== 200) {
@@ -79,3 +79,4 @@ export const getNowHot = async (start,count,city) => {
     return [];
   }
 };
+

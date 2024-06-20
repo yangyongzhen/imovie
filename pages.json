@@ -7,9 +7,11 @@
 			}
 		},
 		{
-			"path": "pages/tabBar/search/search",
+			"path": "pages/tabBar/list/list",
 			"style": {
-				"navigationBarTitleText": "搜索"
+				"navigationBarTitleText": "知乎日报",
+				"enablePullDownRefresh": true,
+				"onReachBottomDistance":50
 			}
 		},
 		{
@@ -53,11 +55,12 @@
 				"text": "首页"
 			},
 			{
-				"pagePath": "pages/tabBar/search/search",
+				"pagePath": "pages/tabBar/list/list",
 				"iconPath": "static/tabbar/search_defaut.png",
 				"selectedIconPath": "static/tabbar/search_select.png",
-				"text": "搜索"
-			}, {
+				"text": "日报"
+			}, 
+			{
 				"pagePath": "pages/tabBar/mine/mine",
 				"iconPath": "static/tabbar/user.png",
 				"selectedIconPath": "static/tabbar/user-selected.png",

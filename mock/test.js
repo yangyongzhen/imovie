@@ -16,7 +16,7 @@ export function mockTest(){
     // 输出结果
     console.log(JSON.stringify(data, null, 4));//使用四个空格缩进
 	
-	const data1 = Mock.mock(uni.$http.baseUrl+'/api/v1/home/swiperdata',{
+	const data1 = Mock.mock(uni.$http.baseUrl+'/api/v1/swiperdata',{
 	        // 属性 list 的值是一个数组，其中含有3个元素
 	        'list|3': [{
 	            'id|+1': 1,
