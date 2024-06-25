@@ -6,7 +6,8 @@
 export const getZhihuNewsList = async (date) => {
   try {
 	console.log('getZhihuNewsList request');
-    const response = await uni.$http.get('/zhihunews/'+date);
+	let date_ = date.replace(/-/g, '')
+    const response = await uni.$http.get('/zhihunews/'+date_);
 	console.log(response);
     if (response.statusCode !== 200) {
       uni.showToast({

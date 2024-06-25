@@ -1,20 +1,15 @@
 <template>
 	<view class="content">
-	
-		 <!-- <scroll-view  :scroll-y="true"
-		 	    :show-scrollbar="false"
-		 	    class="scroll"> -->
 		<swiper class="swiper" circular :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval"
 			:duration="duration" lazy-render>
 			
 			<swiper-item v-for="item in swiperList" :key="item.id">
 				<image :src="item.image" :alt="item.title" mode="widthFix" class="swiper-image"></image>
-				 <view class="swiper-desc" v-if="item.hint">{{ item.hint }}</view>
+				 <view class="swiper-desc" v-if="item.title">{{ item.title }}</view>
 			</swiper-item>
 		</swiper>
-		 <uni-list>
+		 <!-- <uni-list>
 			 <uni-list-item direction="row" v-for="item in stories" :key="item.id" :title="item.title" >
-				<!-- 通过body插槽定义列表内容显示 -->
 				<template v-slot:body>
 					<view class="uni-list-box uni-content">
 						<view class="uni-title uni-ellipsis-2">{{item.title}}</view>
@@ -23,17 +18,45 @@
 						</view>
 					</view>
 				</template>
-				<!-- 通过footer插槽自定义图片右侧显示 -->
+			
 				<template v-slot:footer>
 					<view class="uni-thumb" style="margin: 0;">
 						<image :src="item.image" mode="aspectFill"></image>
 					</view>
 				</template>
 			</uni-list-item>
-		 </uni-list>
+		 </uni-list> -->
 		 <!-- 通过 loadMore 组件实现上拉加载效果，如需自定义显示内容，可参考：https://ext.dcloud.net.cn/plugin?id=29 -->
-		<uni-load-more v-if="loadStatu" :status="listStatus" />
-	<!-- </scroll-view> -->
+		<uni-list>
+		  <template v-for="(item, index) in stories" :key="item.id">
+		    <!-- 如果是第一条或者日期有变化，则插入日期分割线 -->
+		    <uni-list-item direction="row" v-if="isShowDivider(index)" >
+		    <template v-slot:header>
+				<view class="uni-divider__content">
+				  <text>{{item.date.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3')}}</text>
+				</view>
+				<view class="uni-divider__line"></view>
+			</template>
+			</uni-list-item>
+		
+		    <!-- 正常的列表项 -->
+		    <uni-list-item direction="row" :title="item.title">
+		      <template v-slot:body>
+		        <view class="uni-list-box uni-content">
+		          <view class="l-title uni-ellipsis-2">{{item.title}}</view>
+		          <view class="uni-note">
+		            <text>{{item.hint}}</text>
+		          </view>
+		        </view>
+		      </template>
+		      <template v-slot:footer>
+		        <view class="uni-thumb" style="margin: 0;">
+		          <image :src="item.image" mode="aspectFill"></image>
+		        </view>
+		      </template>
+		    </uni-list-item>
+		  </template>
+		</uni-list>
 	</view>
 </template>
 
@@ -50,19 +73,56 @@
 				swiperList:[],
 				// 日报数据列表，默认为空数组
 				stories:[],
-				loadStatu: false, // loading是否显示
-				listStatus: 'loading', // loading状态
+				currentDate: '', // 初始化为今天的日期
+				previousDate: '', // 上一个的日期
 			}
 		},
 		onLoad() {
-
+			this.currentDate = this.formatDate(new Date())
+			this.previousDate = this.currentDate
 		},
 		methods: {
-
+			 formatDate(date) {
+			  const year = date.getFullYear();
+			  const month = String(date.getMonth() + 1).padStart(2, '0'); // 月份从0开始，所以需要+1
+			  const day = String(date.getDate()).padStart(2, '0');
+			  return `${year}-${month}-${day}`;
+			},
+			
+			isShowDivider(index) {
+				if (this.stories[index].date !== this.previousDate) {
+				    this.previousDate = this.stories[index].date;
+					console.log(this.previousDate)
+					if(index!==0){
+						 return true;
+					}
+				}
+				return false;
+			},
+			
+			// 触底之后触发函数，
+			getmorenews() {
+				//this.loadStatu = true
+				//this.listStatus = 'loading'
+				//每次滑动都递减一天
+				const date_ = new Date(this.currentDate);
+				console.log(date_);
+				date_.setDate(date_.getDate() - 1); // 日期减一
+				//console.log(date_);
+				let currentDate_ = this.formatDate(date_);
+				console.log('currentDate_:'+currentDate_);
+				getZhihuNewsList(currentDate_).then(result => {
+					console.log("getZhihuNewsList,result:");
+					console.log(result);
+					this.currentDate = this.formatDate(date_);
+					this.stories = this.stories.concat(result.stories);
+				});
+			}
 		},
 		mounted() {
 			console.log("mounted")
-			getZhihuNewsList('20240620').then(result => {
+			console.log('currentDate:'+this.currentDate);
+			getZhihuNewsList(this.currentDate).then(result => {
 				console.log("getZhihuNewsList,result:");
 				console.log(result);
 				this.stories = result.stories;
@@ -79,6 +139,7 @@
 		 */
 		onReachBottom() {
 			console.log('onReachBottom')
+			this.getmorenews()
 		}
 	}
 </script>
@@ -107,8 +168,14 @@
 		margin-top: 0;
 	}
 
+	.l-title {
+		font-weight: bold;
+		font-size: 30rpx;
+		color: #3b4144;
+	}
+	
 	.uni-content {
-		padding-right: 10px;
+		padding-right: 10rpx;
 	}
 
 	.uni-note {
@@ -117,34 +184,12 @@
 		justify-content: space-between;
 	}
 
-	.tips {
-		color: #67c23a;
-		font-size: 14px;
-		line-height: 40px;
-		text-align: center;
-		background-color: #f0f9eb;
-		height: 0;
-		opacity: 0;
-		transform: translateY(-100%);
-		transition: all 0.3s;
-	}
-
-	.tips-ani {
-		transform: translateY(0);
-		height: 40px;
-		opacity: 1;
-	}
-
-	.list-picture {
-		width: 100%;
-		height: 145px;
-	}
-
 	.thumb-image {
 		width: 100%;
 		height: 100%;
 	}
 
+	/*布局和溢出隐藏规则*/
 	.ellipsis {
 		display: flex;
 		overflow: hidden;
@@ -152,20 +197,18 @@
 
 	.uni-ellipsis-1 {
 		overflow: hidden;
-		white-space: nowrap;
+		white-space: nowrap;  /*nowrap;：强制文本在一行内显示，不允许换行*/
 		text-overflow: ellipsis;
 	}
 
+	/*多行文本的省略效果*/
 	.uni-ellipsis-2 {
 		overflow: hidden;
+		/*表示当文本内容超出所在容器的宽度时，用省略号来代替超出的部分*/
 		text-overflow: ellipsis;
 		display: -webkit-box;
-	}
-	
-	.scroll{
-		height:600rpx;
-		width: 100%;
-		margin-top:10rpx;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
 	}
 	
 	.swiper {
@@ -193,5 +236,18 @@
 		height: 300rpx;
 		line-height: 300rpx;
 		text-align: center;
+	}
+	
+	.date-divider {
+	  color: #8f8f94;
+	  font-size: 12rpx;
+	  font-weight: bold;
+	}
+	.line-divider {
+	  height: 1px;
+	  width: 75%;
+	  margin-left: 10rpx;
+	  margin-top: 15rpx;
+	  background-color: #D8D8D8; /* 分割线颜色 */
 	}
 </style>
