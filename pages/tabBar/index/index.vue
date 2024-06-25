@@ -10,7 +10,6 @@
 				</swiper-item>
 				
 			</swiper>
-			<uni-notice-bar scrollable="true" text="这里是滚动显示的公告内容" speed:='30' style="margin-top: 5rpx;"></uni-notice-bar>
 			
 			<view class="title">
 				<view class="title-item">
@@ -30,7 +29,7 @@
 			        <view  v-for="(item, index) in hotList"
 			        :key="index"
 			        @click="goToDetail(item.id)" class="movie-item">
-			          <image :src="item.cover" mode="heightFix" />
+			          <image :src="item.cover" class="movie-item-img" mode="heightFix" />
 			          <view class="movie-item-title">{{ ellipsis(item.title) }}</view>
 					  <view class="movie-rate">
 					  	<uni-rate :readonly="true" :value="item.rate/2" size=12 active-color="#ffaa00" color="#DADADA">
@@ -156,7 +155,7 @@
 			getTop250(0,5).then(item => {
 				//this.swiperList = item;
 			});
-			getNowHot(0,2,"郑州").then(result => {
+			getNowHot(0,10,"郑州").then(result => {
 				//this.swiperList = item;
 				console.log("getNowHot,result:");
 				console.log(result);
@@ -169,6 +168,15 @@
 </script>
 
 <style scoped>
+	page {
+			display: flex;
+			flex-direction: column;
+			box-sizing: border-box;
+			background-color: #efeff4;
+			min-height: 100%;
+			height: auto;
+			font-size: 18rpx;
+		}
 	.content {
 		display: flex;
 		flex-direction: column;
@@ -247,7 +255,7 @@
 	}
 	
 	.movie-item-img {
-		border-radius: 5rpx;
+		border-radius: 10rpx;
 	}
 	.movie-item-title {
 	  color: #606266;

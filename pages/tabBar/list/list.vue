@@ -3,7 +3,7 @@
 		<swiper class="swiper" circular :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval"
 			:duration="duration" lazy-render>
 			
-			<swiper-item v-for="item in swiperList" :key="item.id">
+			<swiper-item v-for="item in swiperList" :key="item.id" @click="toSwiper(item.id)">
 				<image :src="item.image" :alt="item.title" mode="widthFix" class="swiper-image"></image>
 				 <view class="swiper-desc" v-if="item.title">{{ item.title }}</view>
 			</swiper-item>
@@ -40,7 +40,7 @@
 			</uni-list-item>
 		
 		    <!-- 正常的列表项 -->
-		    <uni-list-item direction="row" :title="item.title">
+		    <uni-list-item direction="row" :title="item.title" :to="'/pages/tabBar/list/detail/detail?id='+item.id">
 		      <template v-slot:body>
 		        <view class="uni-list-box uni-content">
 		          <view class="l-title uni-ellipsis-2">{{item.title}}</view>
@@ -99,6 +99,11 @@
 				}
 				return false;
 			},
+			toSwiper(id) {
+			      uni.navigateTo({
+			        url: `/pages/tabBar/list/detail/detail?id=${id}`
+			      });
+			},
 			
 			// 触底之后触发函数，
 			getmorenews() {
@@ -106,7 +111,7 @@
 				//this.listStatus = 'loading'
 				//每次滑动都递减一天
 				const date_ = new Date(this.currentDate);
-				console.log(date_);
+				//console.log(date_);
 				date_.setDate(date_.getDate() - 1); // 日期减一
 				//console.log(date_);
 				let currentDate_ = this.formatDate(date_);
