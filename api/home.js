@@ -80,3 +80,91 @@ export const getNowHot = async (start,count,city) => {
   }
 };
 
+
+// 获取即将上映的电影
+export const getSoonMovie = async (start,count) => {
+  try {
+	console.log('getSoonMovie request');
+	//const response = await uni.$http.post('/movie/in_theaters',{
+    const response = await uni.$http.post('/soonmovie',{
+		apikey: uni.$apiKey,start:start,count:count});
+	
+	console.log(response);
+    if (response.statusCode !== 200) {
+      uni.showToast({
+        title: '数据请求失败! ',
+        duration: 1500,
+        icon: 'none',
+      });
+      return [];
+    }
+    return response.data;
+  } catch (error) {
+    console.error('Network request failed:', error);
+    uni.showToast({
+      title: '网络请求失败! ',
+      duration: 1500,
+      icon: 'none',
+    });
+    return [];
+  }
+};
+
+
+// 获取周电影榜单电影
+export const getWeekMovie = async (start,count) => {
+  try {
+	console.log('getWeekMovie request');
+	//const response = await uni.$http.post('/movie/in_theaters',{
+    const response = await uni.$http.post('/weekmovie',{
+		apikey: uni.$apiKey,start:start,count:count});
+	
+	console.log(response);
+    if (response.statusCode !== 200) {
+      uni.showToast({
+        title: '数据请求失败! ',
+        duration: 1500,
+        icon: 'none',
+      });
+      return [];
+    }
+    return response.data;
+  } catch (error) {
+    console.error('Network request failed:', error);
+    uni.showToast({
+      title: '网络请求失败! ',
+      duration: 1500,
+      icon: 'none',
+    });
+    return [];
+  }
+};
+
+// 获取最新上映电影
+export const getNewMovie = async (start,count) => {
+  try {
+	console.log('getNewMovie request');
+	//const response = await uni.$http.post('/movie/in_theaters',{
+    const response = await uni.$http.post('/newmovie',{
+		apikey: uni.$apiKey,start:start,count:count});
+	
+	console.log(response);
+    if (response.statusCode !== 200) {
+      uni.showToast({
+        title: '数据请求失败! ',
+        duration: 1500,
+        icon: 'none',
+      });
+      return [];
+    }
+    return response.data;
+  } catch (error) {
+    console.error('Network request failed:', error);
+    uni.showToast({
+      title: '网络请求失败! ',
+      duration: 1500,
+      icon: 'none',
+    });
+    return [];
+  }
+};

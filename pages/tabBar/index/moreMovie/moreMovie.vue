@@ -1,11 +1,11 @@
 <template>
 	<view  class="wrapper">
 		<!-- 电影列表 -->
-		<scroll-view  :scroll-y="true"
+		<!-- <scroll-view  :scroll-y="true"
 			    :show-scrollbar="false"
-			    class="scroll">
+			    class="scroll"> -->
 			<view class="movie-box">
-				<view v-for="(item, index) in hotList" :key="index" class="movie-item">
+				<view v-for="(item, index) in movieInfo" :key="index" class="movie-item">
 					<image class="movie-item-img" :src="item.cover"  mode="heightFix"></image>
 					 <view class="movie-item-title">{{ ellipsis(item.title) }}</view>
 						<view class="movie-rate">
@@ -16,12 +16,12 @@
 				</view>
 			</view>
 			<uni-load-more :status="listStatus" :contentText="contentText" v-if="loadStatu"></uni-load-more>
-		</scroll-view>
+		<!-- </scroll-view> -->
 	</view>
 </template>
 
 <script>
-	import { getNowHot } from '@/api/home.js';
+	import { getNowHot, getSoonMovie } from '@/api/home.js';
 	export default {
 		
 		data() {
@@ -31,10 +31,14 @@
 				contentText: {
 					contentdown: "加载更多",
 					contentrefresh: "正在加载...",
-					contentnomore: "我是有底线的"
+					contentnomore: "到底了"
 				},
-				pageNum: 1, // 电影列表初始页数
+				pageNum: 0, // 电影列表初始页数
+				count:0,
+				total:0,
 				movieInfo: [], // 电影列表
+				pageID:"0",  //当前页面的ID
+				pageTitle: "默认标题",
 				hotList: [
 				        {
 				          id: 1,
@@ -75,6 +79,18 @@
 					]
 			};
 		},
+		onLoad(params) {
+			console.log('moreMovie onload');
+			console.log(params);
+			this.pageID = params.item;
+			// 设置初始页面标题
+			this.pageTitle = "更多电影";
+		},
+		watch:{
+		        pageTitle(newTitle) {
+		            this.updateNavigationBarTitle(newTitle);
+		        }
+		},
 		onReachBottom: function() { // 页面触底触发
 			console.log('触底’')
 			this.getmorenews()
@@ -88,37 +104,93 @@
 				}
 				return value
 			},
+			updateNavigationBarTitle(title) {
+			    uni.setNavigationBarTitle({
+			        title: title
+			    });
+			},
 			// 触底之后触发函数，
 			getmorenews() {
 				var that = this
-				that.loadStatu = true
-				if (that.movieInfo.length > 89) {
-					that.listStatus = 'noMore'
-					return
-				}
-				that.listStatus = 'loading'
+
 				console.log('page:'+this.pageNum);
-				getNowHot(this.pageNum,10,"郑州").then(result => {
-					//this.swiperList = item;
-					//that.loadStatu = false
-					this.listStatus = "more";
-					this.pageNum++;
-					console.log("getNowHot,result:");
-					console.log(result);
-					that.hotList = that.hotList.concat(result.data);
-					that.listStatus = 'loading'
-					//this.hotList = result; 
-				});
+				if(this.pageNum == this.total){
+					that.loadStatu = true
+					that.listStatus = 'noMore'
+					return;
+				}else{
+					that.loadStatu = true
+					that.listStatus = 'more'
+				}
+				switch (this.pageID) {
+					case "1":{
+						getSoonMovie(this.pageNum,12).then(result => {
+							//this.swiperList = item;
+							//that.loadStatu = false
+							console.log("getSoonMovie,result:");
+							console.log(result);
+							that.movieInfo = that.movieInfo.concat(result.data);
+							this.count = result.count;
+							this.pageNum += result.data.length;
+							
+							if(this.pageNum == this.total){
+								that.loadStatu = true
+								that.listStatus = 'noMore'
+							}
+						});
+					}break;
+					case "2":{
+						getNowHot(this.pageNum,12,"郑州").then(result => {
+							//this.swiperList = item;
+							//that.loadStatu = false
+							console.log("getNowHot,result:");
+							console.log(result);
+							that.movieInfo = that.movieInfo.concat(result.data);
+							this.count = result.count;
+							this.pageNum += result.data.length;
+							
+							if(this.pageNum == this.total){
+								that.loadStatu = true
+								that.listStatus = 'noMore'
+							}
+						});
+					}break;
+					default:break;
+				}
 			}
 		},
 		mounted() {
 			console.log("mounted")
-			getNowHot(0,20,"郑州").then(result => {
-				//this.swiperList = item;
-				console.log("getNowHot,result:");
-				console.log(result);
-				this.hotList = result.data; 
-			});
+			console.log(this.pageID)
+			switch (this.pageID) {
+				case "1":{
+					this.pageTitle = "即将上映";
+					getSoonMovie(0,12).then(result => {
+						//this.swiperList = item;
+						console.log("getSoonMovie,result:");
+						console.log(result);
+						this.movieInfo = result.data; 
+						this.total = result.total;
+						this.count = result.count;
+						this.pageNum += result.data.length;
+					});
+				}break;
+				case "2":{
+					this.pageTitle = "正在热映";
+					getNowHot(0,12,"郑州").then(result => {
+						//this.swiperList = item;
+						console.log("getNowHot,result:");
+						console.log(result);
+						this.movieInfo = result.data; 
+						this.total = result.total;
+						this.count = result.count;
+						this.pageNum += result.data.length;
+					});
+				}break;
+				default:
+				break;
+			}
+			
 		}
 	}
 </script>

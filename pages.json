@@ -27,10 +27,10 @@
 			}
 		}
 	    ,{
-            "path" : "pages/tabBar/index/hotMovie/hotMovie",
+            "path" : "pages/tabBar/index/moreMovie/moreMovie",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "影院热映",
+                "navigationBarTitleText": "更多电影",
                 "enablePullDownRefresh": true
             }
             

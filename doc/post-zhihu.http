@@ -22,7 +22,7 @@ get http://news-at.zhihu.com/api/4/news/9773253
 get http://175.178.126.10:8000/api/v1/swiperdata
 
 ### 知乎日报
-get http://175.178.126.10:8000/api/v1/zhihunews/20240617
+get http://175.178.126.10:8000/api/v1/zhihunews/20240625
 
 ### 知乎日报 详情
 get http://175.178.126.10:8000/api/v1/zhihudetail/9773231
@@ -33,8 +33,8 @@ post https://api.douban.com/v2/movie/coming_soon
 Content-Type:application/json
 
 {
-    "start": 0,
-    "count": 1,
+    "start": 40,
+    "count": 10,
     "city": "郑州",
     "apikey": "0ab215a8b1977939201640fa14c66bab"
 }
@@ -56,7 +56,15 @@ Content-Type:application/json
     "start": 0,
     "count": 1
 }
-
+### 正在热映
+post http://175.178.126.10:8000/api/v1/hotmovie
+Content-Type:application/json
+ 
+{
+    "start": 36,
+    "count": 12,
+    "city": "郑州"
+}
 ### 周榜
 post http://175.178.126.10:8000/api/v1/weekmovie
 Content-Type:application/json

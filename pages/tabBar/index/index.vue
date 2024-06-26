@@ -13,7 +13,7 @@
 			
 			<view class="title">
 				<view class="title-item">
-					影院热映
+					即将上映
 				</view>
 				<view class="title-more" @click="goToMore(1)">
 					查看更多 >
@@ -26,7 +26,7 @@
 			    class="scroll"
 			  >
 			  <view class="movie-box">
-			        <view  v-for="(item, index) in hotList"
+			        <view  v-for="(item, index) in soonList"
 			        :key="index"
 			        @click="goToDetail(item.id)" class="movie-item">
 			          <image :src="item.cover" class="movie-item-img" mode="heightFix" />
@@ -39,11 +39,40 @@
 			        </view>
 			  </view>  
 			  </scroll-view>
+			  <!-- 最新上映====================== -->
 			  <view class="title">
 			  	<view class="title-item">
-			  		豆瓣热门
+			  		最新上映
 			  	</view>
-			  	<view class="title-more" @click="goToMore(1)">
+			  	<view class="title-more" @click="goToMore(2)">
+			  		查看更多 >
+			  	</view>
+			  </view>
+			  <scroll-view
+			     :scroll-x="true"
+			     :show-scrollbar="false"
+			     class="scroll"
+			   >
+			   <view class="movie-box">
+			         <view  v-for="(item, index) in newsList"
+			         :key="index"
+			         @click="goToDetail(item.id)" class="movie-item">
+			           <image class="movie-item-img" :src="item.cover" mode="heightFix" />
+			           <view class="movie-item-title">{{ ellipsis(item.title) }}</view>
+			  					  <view class="movie-rate">
+			  					  	<uni-rate :readonly="true" :value="item.rate/2" size=12 active-color="#ffaa00" color="#DADADA">
+			  					  	</uni-rate>
+			  					  	<text class="movie-rate-t">{{item.rate}}</text>
+			  					  </view>
+			         </view>
+			   </view>  
+			   </scroll-view>
+			   <!-- 正在热映 -->
+			  <view class="title">
+			  	<view class="title-item">
+			  		正在热映
+			  	</view>
+			  	<view class="title-more" @click="goToMore(2)">
 			  		查看更多 >
 			  	</view>
 			  </view>
@@ -66,12 +95,41 @@
 			         </view>
 			   </view>  
 			   </scroll-view>
+			   <!-- 一周热榜====================== -->
+			   <view class="title">
+			   	<view class="title-item">
+			   		一周热榜
+			   	</view>
+			   	<view class="title-more" @click="goToMore(2)">
+			   		查看更多 >
+			   	</view>
+			   </view>
+			   <scroll-view
+			      :scroll-x="true"
+			      :show-scrollbar="false"
+			      class="scroll"
+			    >
+			    <view class="movie-box">
+			          <view  v-for="(item, index) in weekList"
+			          :key="index"
+			          @click="goToDetail(item.id)" class="movie-item">
+			            <image class="movie-item-img" :src="item.cover" mode="heightFix" />
+			            <view class="movie-item-title">{{ ellipsis(item.title) }}</view>
+			   					  <view class="movie-rate">
+			   					  	<uni-rate :readonly="true" :value="item.rate/2" size=12 active-color="#ffaa00" color="#DADADA">
+			   					  	</uni-rate>
+			   					  	<text class="movie-rate-t">{{item.rate}}</text>
+			   					  </view>
+			          </view>
+			    </view>  
+			    </scroll-view>
+			
 		</view>
 	</view>
 </template>
 
 <script>
-	import { getSwiperList, getTop250,getNowHot } from '@/api/home.js';
+	import { getSwiperList, getTop250,getNowHot,getSoonMovie,getWeekMovie,getNewMovie } from '@/api/home.js';
 	export default {
 		data() {
 			return {
@@ -81,6 +139,9 @@
 				duration: 500,
 				// 轮播图的数据列表，默认为空数组
 				swiperList:[],
+				soonList:[], //即将上映
+				weekList:[], //一周热榜
+				newsList:[], //最新上映
 			    hotList: [
 			            {
 			              id: 1,
@@ -141,7 +202,7 @@
 			goToMore(item) {
 				console.log(item)
 				uni.navigateTo({
-					url: '../index/hotMovie/hotMovie',
+					url: `../index/moreMovie/moreMovie?item=${item}`,
 					animationType: 'pop-in',
 					animationDuration: 200
 				})
@@ -161,6 +222,25 @@
 				console.log(result);
 				this.hotList = result.data; 
 			});
+			getSoonMovie(0,10).then(result => {
+				//this.swiperList = item;
+				console.log("getSoonMovie,result:");
+				console.log(result);
+				this.soonList = result.data; 
+			});
+			getWeekMovie(0,10).then(result => {
+				//this.swiperList = item;
+				console.log("getWeekMovie,result:");
+				console.log(result);
+				this.weekList = result.data; 
+			});
+			
+			getNewMovie(0,10).then(result => {
+				//this.swiperList = item;
+				console.log("getNewMovie,result:");
+				console.log(result);
+				this.newsList = result.data; 
+			});
 		
 			
 		}
@@ -175,7 +255,7 @@
 			background-color: #efeff4;
 			min-height: 100%;
 			height: auto;
-			font-size: 18rpx;
+			font-size: 30rpx;
 		}
 	.content {
 		display: flex;
@@ -222,6 +302,7 @@
 		justify-content: space-between;
 		padding-left: 10rpx;
 		padding-right: 10rpx;
+		margin-top: 15rpx;
 	}
 	.title-item{
 		font-weight: bold;
