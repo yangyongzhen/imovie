@@ -41,7 +41,14 @@
         	{
         		"navigationBarTitleText" : "日报详情"
         	}
-        }
+        },
+		{
+			"path" : "pages/tabBar/index/detail/detail",
+			"style" : 
+			{
+				"navigationBarTitleText" : "电影详情"
+			}
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

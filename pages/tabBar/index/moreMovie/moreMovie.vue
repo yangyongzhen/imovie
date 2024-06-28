@@ -5,7 +5,7 @@
 			    :show-scrollbar="false"
 			    class="scroll"> -->
 			<view class="movie-box">
-				<view v-for="(item, index) in movieInfo" :key="index" class="movie-item">
+				<view v-for="(item, index) in movieInfo" :key="index" class="movie-item" @click="goToDetail(item.id)">
 					<image class="movie-item-img" :src="item.cover"  mode="heightFix"></image>
 					 <view class="movie-item-title">{{ ellipsis(item.title) }}</view>
 						<view class="movie-rate">
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-	import { getNowHot, getSoonMovie } from '@/api/home.js';
+	import { getNowHot, getSoonMovie, getNewMovie, getWeekMovie } from '@/api/home.js';
 	export default {
 		
 		data() {
@@ -109,6 +109,15 @@
 			        title: title
 			    });
 			},
+			goToDetail(id){
+				console.log("goToDetail:")
+				console.log(id)
+				uni.navigateTo({
+					url: `../index/detail/detail?id=${id}`,
+					animationType: 'pop-in',
+					animationDuration: 200
+				})
+			},
 			// 触底之后触发函数，
 			getmorenews() {
 				var that = this
@@ -140,10 +149,42 @@
 						});
 					}break;
 					case "2":{
+						getNewMovie(this.pageNum,12).then(result => {
+							//this.swiperList = item;
+							//that.loadStatu = false
+							console.log("getNowHot,result:");
+							console.log(result);
+							that.movieInfo = that.movieInfo.concat(result.data);
+							this.count = result.count;
+							this.pageNum += result.data.length;
+							
+							if(this.pageNum == this.total){
+								that.loadStatu = true
+								that.listStatus = 'noMore'
+							}
+						});
+					}break;
+					case "3":{
 						getNowHot(this.pageNum,12,"郑州").then(result => {
 							//this.swiperList = item;
 							//that.loadStatu = false
 							console.log("getNowHot,result:");
+							console.log(result);
+							that.movieInfo = that.movieInfo.concat(result.data);
+							this.count = result.count;
+							this.pageNum += result.data.length;
+							
+							if(this.pageNum == this.total){
+								that.loadStatu = true
+								that.listStatus = 'noMore'
+							}
+						});
+					}break;
+					case "4":{
+						getWeekMovie(this.pageNum,12).then(result => {
+							//this.swiperList = item;
+							//that.loadStatu = false
+							console.log("getWeekMovie,result:");
 							console.log(result);
 							that.movieInfo = that.movieInfo.concat(result.data);
 							this.count = result.count;
@@ -176,10 +217,34 @@
 					});
 				}break;
 				case "2":{
+					this.pageTitle = "最新上映";
+					getNewMovie(0,12).then(result => {
+						//this.swiperList = item;
+						console.log("getNewMovie,result:");
+						console.log(result);
+						this.movieInfo = result.data; 
+						this.total = result.total;
+						this.count = result.count;
+						this.pageNum += result.data.length;
+					});
+				}break;
+				case "3":{
 					this.pageTitle = "正在热映";
 					getNowHot(0,12,"郑州").then(result => {
 						//this.swiperList = item;
 						console.log("getNowHot,result:");
+						console.log(result);
+						this.movieInfo = result.data; 
+						this.total = result.total;
+						this.count = result.count;
+						this.pageNum += result.data.length;
+					});
+				}break;
+				case "4":{
+					this.pageTitle = "一周热榜";
+					getWeekMovie(0,12).then(result => {
+						//this.swiperList = item;
+						console.log("getWeekMovie,result:");
 						console.log(result);
 						this.movieInfo = result.data; 
 						this.total = result.total;

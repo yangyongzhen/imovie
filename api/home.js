@@ -168,3 +168,31 @@ export const getNewMovie = async (start,count) => {
     return [];
   }
 };
+
+// 获取电影详情
+export const getMovieDetail = async (id) => {
+  try {
+	console.log('getMovieDetail request');
+    const response = await uni.$http.post('/detailmovie',{
+		id:id});
+	
+	console.log(response);
+    if (response.statusCode !== 200) {
+      uni.showToast({
+        title: '数据请求失败! ',
+        duration: 1500,
+        icon: 'none',
+      });
+      return [];
+    }
+    return response.data;
+  } catch (error) {
+    console.error('Network request failed:', error);
+    uni.showToast({
+      title: '网络请求失败! ',
+      duration: 1500,
+      icon: 'none',
+    });
+    return [];
+  }
+};

@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
 		<view class="uni-margin-wrap">
-			<swiper class="swiper" circular :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval"
+			<!-- <swiper class="swiper" circular :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval"
 				:duration="duration"  lazy-render>
 				
 				<swiper-item v-for="item in swiperList" :key="item.id">
@@ -9,7 +9,18 @@
 					 <view class="swiper-desc" v-if="item.description">{{ item.description }}</view>
 				</swiper-item>
 				
-			</swiper>
+			</swiper> -->
+			<view class="search-bar-box">
+			 <uni-search-bar 
+			       @confirm="onSearch" 
+			       placeholder="搜索" 
+			       @input="onInput" 
+			       :focus="focus" 
+			       :maxlength="50" 
+			       @blur="onBlur" 
+			       :clearbutton="true"
+			     />
+			</view>
 			
 			<view class="title">
 				<view class="title-item">
@@ -72,7 +83,7 @@
 			  	<view class="title-item">
 			  		正在热映
 			  	</view>
-			  	<view class="title-more" @click="goToMore(2)">
+			  	<view class="title-more" @click="goToMore(3)">
 			  		查看更多 >
 			  	</view>
 			  </view>
@@ -100,7 +111,7 @@
 			   	<view class="title-item">
 			   		一周热榜
 			   	</view>
-			   	<view class="title-more" @click="goToMore(2)">
+			   	<view class="title-more" @click="goToMore(4)">
 			   		查看更多 >
 			   	</view>
 			   </view>
@@ -196,7 +207,13 @@
 				return value
 			},
 			goToDetail(id){
-				
+				console.log("goToDetail:")
+				console.log(id)
+				uni.navigateTo({
+					url: `../index/detail/detail?id=${id}`,
+					animationType: 'pop-in',
+					animationDuration: 200
+				})
 			},
 			
 			goToMore(item) {
@@ -355,5 +372,11 @@
 	.movie-rate-t {
 		margin-right: 4rpx;
 		font-size: 8rpx;
+	}
+	
+	.search-bar-box {
+	  background-color: #55aaff; 
+	  padding: 6rpx;
+	  border-radius: 4rpx; 
 	}
 </style>
