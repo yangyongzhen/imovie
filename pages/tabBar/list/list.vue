@@ -163,6 +163,7 @@
 	
 	.content {
 		width: 100%;
+		min-height: 100.1vh; // 重点
 		display: flex;
 		flex-direction: column;
 		align-items: center;

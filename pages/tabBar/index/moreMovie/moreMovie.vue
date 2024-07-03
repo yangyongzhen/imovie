@@ -266,6 +266,7 @@
 		top: 0;
 		bottom: 0;
 		width: 100%;
+		min-height: 100.1vh; // 重点
 		background-color: #F4F4F4;
 	}
 	
@@ -298,7 +299,8 @@
 	}
 	.movie-item-title {
 	  color: #606266;
-	  font-size: 8rpx;
+	  font-size: 18rpx;
+	  font-weight: bold;
 	  margin-top: 10rpx;
 	}
 	.movie-rate {

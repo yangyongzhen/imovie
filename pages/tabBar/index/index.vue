@@ -357,7 +357,8 @@
 	}
 	.movie-item-title {
 	  color: #606266;
-	  font-size: 10rpx;
+	  font-size: 18rpx;
+	  font-weight: bold;
 	  margin-top: 10rpx;
 	}
 	.movie-rate {

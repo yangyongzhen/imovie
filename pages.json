@@ -11,7 +11,7 @@
 			"style": {
 				"navigationBarTitleText": "知乎日报",
 				"enablePullDownRefresh": true,
-				"onReachBottomDistance":50
+				"onReachBottomDistance":100
 			}
 		},
 		{
@@ -31,6 +31,7 @@
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "更多电影",
+				"onReachBottomDistance": 100,
                 "enablePullDownRefresh": true
             }
             
