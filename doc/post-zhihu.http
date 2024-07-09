@@ -88,7 +88,7 @@ post http://175.178.126.10:8000/api/v1/detailmovie
 Content-Type:application/json
  
 {
-    "id": "1292052",
+    "id": "36877322"
 }
 
 ### top250 movie request /api/v1/topmovie
@@ -159,7 +159,7 @@ Content-Type:application/json
 
 ### movie detail request /api/v1/moviedetail
 ### 电影详情
-post https://api.douban.com/v2/movie/subject/1292052
+post https://api.douban.com/v2/movie/subject/36877322
 Content-Type:application/json
  
 {

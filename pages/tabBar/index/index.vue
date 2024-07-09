@@ -215,6 +215,9 @@
 					animationDuration: 200
 				})
 			},
+			onSearch(){
+				console.log("onSearch:")
+			},
 			
 			goToMore(item) {
 				console.log(item)
