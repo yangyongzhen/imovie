@@ -131,7 +131,7 @@
 				console.log("getZhihuNewsList,result:");
 				console.log(result);
 				this.stories = result.stories;
-				this.swiperList = result.stories;
+				this.swiperList = result.top_stories;
 			});
 		},/**
 		 * 下拉刷新回调函数

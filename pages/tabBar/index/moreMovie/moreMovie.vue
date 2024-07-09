@@ -113,7 +113,7 @@
 				console.log("goToDetail:")
 				console.log(id)
 				uni.navigateTo({
-					url: `../index/detail/detail?id=${id}`,
+					url: `../detail/detail?id=${id}`,
 					animationType: 'pop-in',
 					animationDuration: 200
 				})
