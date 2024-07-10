@@ -66,7 +66,15 @@ Content-Type:application/json
 {
     "id": "1292052",
 }
-
+### 电影短评
+post http://175.178.126.10:8000/api/v1/commentmovie
+Content-Type:application/json
+ 
+{
+    "id": "1292052",
+    "start": 0,
+    "count": 2
+}
 ### top250 movie request /api/v1/topmovie
 post http://175.178.126.10:8000/api/v1/topmovie
 Content-Type:application/json
@@ -150,7 +158,7 @@ Content-Type:application/json
  
 {
     "start": 0,
-    "count": 1,
+    "count": 2,
     "apikey": "0df993c66c0c636e29ecbb5344252a4a"
 }
 
