@@ -30,7 +30,7 @@
 		<uni-list>
 		  <template v-for="(item, index) in stories" :key="item.id">
 		    <!-- 如果是第一条或者日期有变化，则插入日期分割线 -->
-		    <uni-list-item direction="row" v-if="isShowDivider(index)" >
+		    <uni-list-item direction="row" v-if="item.isShowDivider" >
 		    <template v-slot:header>
 				<view class="uni-divider__content">
 				  <text>{{item.date.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3')}}</text>
@@ -88,17 +88,6 @@
 			  const day = String(date.getDate()).padStart(2, '0');
 			  return `${year}-${month}-${day}`;
 			},
-			
-			isShowDivider(index) {
-				if (this.stories[index].date !== this.previousDate) {
-				    this.previousDate = this.stories[index].date;
-					console.log(this.previousDate)
-					if(index!==0){
-						 return true;
-					}
-				}
-				return false;
-			},
 			toSwiper(id) {
 			      uni.navigateTo({
 			        url: `/pages/tabBar/list/detail/detail?id=${id}`
@@ -121,6 +110,20 @@
 					console.log(result);
 					this.currentDate = this.formatDate(date_);
 					this.stories = this.stories.concat(result.stories);
+					
+					let store_ = this.stories.map((item, index) => {
+						let isShowDivider = false;
+						if (item.date !== this.previousDate) {
+						  this.previousDate = item.date;
+						  isShowDivider = true;
+						}
+						return {
+						  ...item,
+						  isShowDivider
+						};
+					  });
+					  this.stories = store_;
+					
 				});
 			}
 		},
@@ -250,7 +253,7 @@
 	  font-weight: bold;
 	}
 	.line-divider {
-	  height: 1px;
+	  height: 1rpx;
 	  width: 75%;
 	  margin-left: 10rpx;
 	  margin-top: 15rpx;
