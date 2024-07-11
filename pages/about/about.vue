@@ -8,17 +8,19 @@
 			<view class="desc">
 				<text class="code">iMovie</text>
 				是一个使用 <text class="code">Vue.js</text> 开发跨平台影视类应用。
+				<text>
+					声明：本应用是一个为学习跨端应用而开发的一个小程序，仅用于学习研究用途，内容搜索来自互联网。如有侵权，请联系邮箱534117529@qq.com.
+				</text>
 			</view>
 			<view class="source">
 				<view class="title">本示例源码获取方式：</view>
 				<view class="source-list">
 					<view class="source-cell">
-						<text space="nbsp">1. </text>
-						<text>下载 HBuilderX，新建 uni-app 项目时选择 <text class="code">我的项目</text> 模板。</text>
+						<text space="nbsp">1. 我的博客:</text>
+						<uni-link href="https://blog.csdn.net/qq8864" text="https://blog.csdn.net/qq8864/"></uni-link>
 					</view>
 					<view class="source-cell">
-						<text space="nbsp">2. 我的博客:</text>
-						<uni-link href="https://blog.csdn.net/qq8864" text="https://blog.csdn.net/qq8864/"></uni-link>
+						<text space="nbsp">2. QQ:534117529 WeiXin:yongzhen1111</text>
 					</view>
 					<view class="source-cell">
 						<text space="nbsp">3. 源码资源:</text>

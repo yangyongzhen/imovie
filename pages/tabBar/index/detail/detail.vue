@@ -63,35 +63,67 @@
 			</view>
 		 </scroll-view>
 		 
+		 <view class="sub-title" >
+		 	剧照
+		 </view>
+		 <scroll-view
+		    :scroll-x="true"
+		    :show-scrollbar="false"
+		    class="scroll"
+		  >
+		 	<view class="cast-box">
+		 		  <view  v-for="(item, index) in photo.data"
+		 		  :key="index" class="cast-item">
+		 			<image class="cast-item-img" :src="item.icon"  :data-src="item.image" mode="heightFix"  @click="previewImage" />
+		 		  </view>
+		 	</view>
+		  </scroll-view>
+		 
 		 <view class="comment-list">
-		     <view class="comment-item" v-for="(item, index) in cmt.data" :key="index">
-		         <image class="avatar" :src="item.author.avatar" mode="aspectFill"></image>
+			 <view class="comment-title">
+				 <text class="sub-title">短评</text>
+				 <text style="font-size: 28rpx;">全部 {{cmt.total}} ></text>
+			 </view>
+		     <view class="comment-item" v-for="(item, index) in cmt.data" :key="cmt.data.id">
+		          <view class="comment-user">
+					  <image class="avatar" :src="item.author.avatar" mode="aspectFill"></image>
+					  <view class="username">{{ item.author.name }}</view>
+				  </view>
 		         <view class="comment-content">
-		             <view class="username">{{ item.author.name }}</view>
 		             <view class="rating">
 		                 <uni-rate :readonly="true" :value="item.rate/2" size=14 active-color="#ffaa00" color="#DADADA">
 		                 </uni-rate>
 		             </view>
-		             <view class="comment-text">{{ item.content }}</view>
+		             <view :class="['comment-text', { 'folded-comment': item.isFolded }]"  @click="toggleComment(index)" >{{ item.content }}</view>
 		             <view class="like-count">赞 {{ item.useful_count }}</view>
+					  <view class="divider__line"></view>
 		         </view>
+				
 		     </view>
-		     <view class="load-more" @click="loadMoreComments">加载更多</view>
+			
+		     <view class="load-more" @click="loadMoreComments">
+				 <text style="font-size: 30rpx; font-weight: bold;">查看全部短评</text>
+				 <text> > </text>
+			 </view>
 		 </view>
 	</view>
 
 </template>
 
 <script>
-	import { getMovieDetail,getMovieComment } from '@/api/detail.js';
+	import { getMovieDetail,getMovieComment,getMoviePhoto } from '@/api/detail.js';
 	export default {
 		data() {
 			return {
 				id:"",
 				mv:{},
 				cmt:{},
+				photo:{},
 				isLoaded:false,
-				isFolded: true // 初始状态为折叠
+				isFolded: true ,// 初始状态为折叠
+				pageNum: 0, // 评论列表初始页数
+				count:0,
+				total:0,
 			}
 		},
 		onLoad(params) {
@@ -115,8 +147,39 @@
 			toggleDescription() {
 				this.isFolded = !this.isFolded;
 			},
+			toggleComment(index) {
+				this.cmt.data[index].isFolded = false;
+			},
+			previewImage(e) {
+			    const current = e.target.dataset.src; // 获取当前点击的图片url
+				console.log(current)
+				// 这里填写所有图片的url数组
+				//const images =[]
+				
+			    const images = this.photo.data.map(item => item.image); 
+				console.log(images)
+			    uni.previewImage({
+			      urls: images, // 需要预览的图片链接列表
+			      current: current, // 当前显示图片的链接
+			    });
+			},
 			loadMoreComments(){
 				console.log("loadMoreComments:")
+				console.log('page:'+this.pageNum);
+				if(this.pageNum == this.total){
+					return;
+				}
+				getMovieComment(this.id,this.pageNum,4).then(result => {
+					console.log("getMovieComment,result:");
+					console.log(result);
+					//this.cmt = result;
+					this.cmt.data = this.cmt.data.concat(result.data.map(comment => ({
+					        ...comment,
+					        isFolded: true, 
+					})));
+					
+					this.pageNum += result.data.length;
+				});
 			}
 		},
 		mounted() {
@@ -130,16 +193,30 @@
 				this.isLoaded = true;
 			});
 			
-			getMovieComment(this.id,0,2).then(result => {
+			getMovieComment(this.id,0,4).then(result => {
 				console.log("getMovieComment,result:");
 				console.log(result);
 				this.cmt = result;
+				this.cmt.data = result.data.map(comment => ({
+				        ...comment,
+				        isFolded: true, // 添加默认折叠状态
+				        // 可以在这里添加更多字段
+				}));
+				this.total = result.total;
+				this.pageNum += result.data.length;
+			});
+			
+			getMoviePhoto(this.id,0,15).then(result => {
+				console.log("getMoviePhoto,result:");
+				console.log(result);
+				this.photo = result;
 			});
 		}
 	}
 </script>
 
-<style>
+<style lang="scss" scoped>
+	$fav-height: 25px;
 	page {
 			display: flex;
 			flex-direction: column;
@@ -159,7 +236,7 @@
 
 	.banner-img {
 		border-radius: 10rpx;
-		width: 200rpx;
+		width: 220rpx;
 		height: 250rpx;
 	}
 
@@ -246,7 +323,7 @@
 	}
 	.sub-title {
 		padding-left: 20rpx;
-		font-size: 42rpx;
+		font-size: 40rpx;
 		font-weight: bold;
 	}
 
@@ -262,7 +339,7 @@
 	    overflow: hidden;
 	    text-overflow: ellipsis;
 	    display: -webkit-box;
-	    -webkit-line-clamp: 3; /* 控制显示行数 */
+	    -webkit-line-clamp: 4; /* 控制显示行数 */
 	    -webkit-box-orient: vertical;
 	}
 	.toggle-button {
@@ -288,7 +365,7 @@
 	  flex-direction: column;
 	  align-items: center;
 	  justify-content: center;
-	  width: 200rpx;
+	  
 	  height: 300rpx;
 	  margin-right: 22rpx;
 	}
@@ -311,12 +388,27 @@
 	.comment-list {
 	    display: flex;
 	    flex-direction: column;
-	    padding: 20rpx;
+		margin: 20rpx;
+		background-color: white;
+	}
+	
+	.comment-title {
+	    display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		padding: 20rpx;
+
 	}
 	
 	.comment-item {
+		display: flex;
+		flex-direction: column;
+		padding: 20rpx;
+		
+	}
+	.comment-user {
 	    display: flex;
-	    margin-bottom: 20rpx;
+		flex-direction: row;
 	}
 	
 	.avatar {
@@ -327,10 +419,18 @@
 	}
 	
 	.comment-content {
-	    flex: 1;
 	    display: flex;
 	    flex-direction: column;
-	    justify-content: space-between;
+	    justify-content: center;
+		line-height: 1.2;
+	}
+	
+	.folded-comment {
+	    overflow: hidden;
+	    text-overflow: ellipsis;
+	    display: -webkit-box;
+	    -webkit-line-clamp: 6; /* 控制显示行数 */
+	    -webkit-box-orient: vertical;
 	}
 	
 	.username {
@@ -351,13 +451,25 @@
 	.like-count {
 	    font-size: 24rpx;
 	    color: #999;
-	    margin-top: 10rpx;
+	    margin-top: 15rpx;
+		padding-bottom: 30rpx;
+	}
+	
+	.divider__line{
+	    background-color: #CCCCCC;
+		opacity: 0.3; /* 设置透明度为50% */
+	    height: 0.2rpx;
+	    width: 100%;
+		margin-top: 20rpx;
+		margin: auto;
+	    z-index: 100;
 	}
 	
 	.load-more {
-	    text-align: center;
-	    margin-top: 20rpx;
-	    color: #007AFF;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	    padding: 0rpx 20rpx 0rpx 20rpx;
 	    cursor: pointer;
 	}
 </style>

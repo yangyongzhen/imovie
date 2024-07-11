@@ -64,10 +64,19 @@ post http://175.178.126.10:8000/api/v1/detailmovie
 Content-Type:application/json
  
 {
-    "id": "1292052",
+    "id": "1292052"
 }
 ### 电影短评
 post http://175.178.126.10:8000/api/v1/commentmovie
+Content-Type:application/json
+ 
+{
+    "id": "1292052",
+    "start": 0,
+    "count": 2
+}
+### 电影剧照
+post http://175.178.126.10:8000/api/v1/photomovie
 Content-Type:application/json
  
 {
@@ -176,6 +185,8 @@ post https://api.douban.com/v2/movie/subject/1292052/photos
 Content-Type:application/json
  
 {
+    "start": 0,
+    "count": 5,
     "apikey": "0df993c66c0c636e29ecbb5344252a4a"
 }
 
