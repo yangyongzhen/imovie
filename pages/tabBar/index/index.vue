@@ -15,7 +15,7 @@
 			       @confirm="onSearch" 
 			       placeholder="搜索" 
 			       @input="onInput" 
-			       :focus="focus" 
+			       @focus="onSearchFocus"
 			       :maxlength="50" 
 			       @blur="onBlur" 
 			       :clearbutton="true"
@@ -217,6 +217,17 @@
 			},
 			onSearch(){
 				console.log("onSearch:")
+				uni.navigateTo({
+					url: `../index/search/search`,
+					animationType: 'pop-in',
+					animationDuration: 200
+				})
+			},
+			onSearchFocus() {
+			      // 调用页面跳转方法
+			      uni.navigateTo({
+			        url: '../index/search/search',
+			      });
 			},
 			
 			goToMore(item) {

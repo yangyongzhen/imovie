@@ -100,6 +100,15 @@ Content-Type:application/json
     "count": 2
 }
 
+### 电影搜索
+post http://175.178.126.10:8000/api/v1/searchmovie
+Content-Type:application/json
+ 
+{
+    "q": "肖申克的救赎",
+    "start": 0,
+    "count": 1
+}
 
 ### Below is the code of douban.http,use vscode extension REST Client to send request.
 ###正在热映影视

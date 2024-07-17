@@ -49,6 +49,16 @@
 			{
 				"navigationBarTitleText" : "电影详情"
 			}
+		},
+		{
+		    "path" : "pages/tabBar/index/search/search",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "搜索",
+				"onReachBottomDistance": 100,
+		        "enablePullDownRefresh": true
+		    }
+		    
 		}
     ],
 	"globalStyle": {
