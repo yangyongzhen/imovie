@@ -222,7 +222,7 @@
 	
 	.swiper {
 		width: 100%;
-		height: 300rpx;
+		height: 450rpx;
 	}
 	.swiper-image{
 		width: 100%; 

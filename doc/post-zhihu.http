@@ -292,3 +292,28 @@ get https://api.douban.com/v2/book/top250?apikey=0b2bdeda43b5688921839c8ecb20399
 get https://news-at.zhihu.com/api/4/news/latest
 
 
+### 票房榜
+get http://shanhe.kim/api/za/piaofang.php
+
+### 免费歌曲
+get https://api.cenguigui.cn/api/music/qianqian_music.php?msg=%E5%BC%A0%E6%9D%B0&n=1
+
+### 热歌榜
+get https://api.uomg.com/api/rand.music?sort=抖音榜&format=json
+
+### 今日头条
+get http://is.snssdk.com/api/news/feed/v51/
+
+
+### 百度热搜    
+get http://top.baidu.com/buzz?b=1&c=513&fr=topbuzz_b311_c513
+
+### 微博热搜
+get https://s.weibo.com/top/summary?cate=realtimehot
+
+
+
+
+### 知乎热榜   
+               
+get https://top.baidu.com/board?tab=movie

@@ -17,7 +17,7 @@
 		<uni-list>
 		  <template v-for="(item, index) in out" :key="item.id">
 		    <!-- 正常的列表项 -->
-		    <uni-list-item direction="row" :title="item.title" :to="'/pages/tabBar/list/detail/detail?id='+item.id">
+		    <uni-list-item direction="row" :title="item.title" :to="'/pages/tabBar/index/detail/detail?id='+item.id">
 		      <template v-slot:body>
 		        <view class="uni-list-box uni-content">
 		          <view class="l-title uni-ellipsis-2">{{item.title}}</view>

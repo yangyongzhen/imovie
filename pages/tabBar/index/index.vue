@@ -14,10 +14,8 @@
 			 <uni-search-bar 
 			       @confirm="onSearch" 
 			       placeholder="搜索" 
-			       @input="onInput" 
 			       @focus="onSearchFocus"
 			       :maxlength="50" 
-			       @blur="onBlur" 
 			       :clearbutton="true"
 			     />
 			</view>
@@ -50,6 +48,7 @@
 			        </view>
 			  </view>  
 			  </scroll-view>
+			 
 			  <!-- 最新上映====================== -->
 			  <view class="title">
 			  	<view class="title-item">
@@ -142,6 +141,7 @@
 <script>
 	import { getSwiperList, getTop250,getNowHot,getSoonMovie,getWeekMovie,getNewMovie } from '@/api/home.js';
 	export default {
+
 		data() {
 			return {
 				indicatorDots: true,
