@@ -371,7 +371,7 @@
 	}
 	.movie-item-title {
 	  color: #606266;
-	  font-size: 18rpx;
+	  font-size: 20rpx;
 	  font-weight: bold;
 	  margin-top: 10rpx;
 	}

@@ -156,7 +156,7 @@
 	}
 
 	.center_name {
-		font-size: 14rpx;
+		font-size: 18rpx;
 	}
 
 	.center_phone {

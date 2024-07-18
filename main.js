@@ -23,7 +23,8 @@ import { $http } from './utils/http.js'
 uni.$http = $http
 // 配置请求根路径
 //$http.baseUrl = 'https://api.douban.com/v2'
-$http.baseUrl = 'http://175.178.126.10:8000/api/v1'
+//$http.baseUrl = 'http://175.178.126.10:8000/api/v1'
+$http.baseUrl = 'https://yangqq.site/api/v1'
 uni.$apiKey = '0ab215a8b1977939201640fa14c66bab'
 // 请求开始之前做一些事情
 $http.beforeRequest = function (options) {
