@@ -19,6 +19,8 @@
 			       :clearbutton="true"
 			     />
 			</view>
+			<!-- 今日票房====================== -->
+			<TodayBoxOffice/>
 			
 			<view class="title">
 				<view class="title-item">
@@ -133,15 +135,47 @@
 			          </view>
 			    </view>  
 			    </scroll-view>
+				
+				<!-- 北美票房榜====================== -->
+				<view class="title">
+					<view class="title-item">
+						北美票房榜
+					</view>
+					<view class="title-more" @click="goToMore(5)">
+						查看更多 >
+					</view>
+				</view>
+				<scroll-view
+				   :scroll-x="true"
+				   :show-scrollbar="false"
+				   class="scroll"
+				 >
+				 <view class="movie-box">
+				       <view  v-for="(item, index) in usBoxList"
+				       :key="index"
+				       @click="goToDetail(item.id)" class="movie-item">
+				         <image class="movie-item-img" :src="item.cover" mode="heightFix" />
+				         <view class="movie-item-title">{{ ellipsis(item.title) }}</view>
+									  <view class="movie-rate">
+									  	<uni-rate :readonly="true" :value="item.rate/2" size=12 active-color="#ffaa00" color="#DADADA">
+									  	</uni-rate>
+									  	<text class="movie-rate-t">{{item.rate}}</text>
+									  </view>
+				       </view>
+				 </view>  
+				 </scroll-view>
 			
 		</view>
 	</view>
 </template>
 
 <script>
-	import { getSwiperList, getTop250,getNowHot,getSoonMovie,getWeekMovie,getNewMovie } from '@/api/home.js';
+	import TodayBoxOffice from '@/components/TodayBoxOffice.vue';
+	import { getSwiperList, getTop250,getNowHot,getSoonMovie,getWeekMovie,getNewMovie,getUsBoxMovie } from '@/api/home.js';
 	export default {
-
+		components: {
+		    TodayBoxOffice
+		  },
 		data() {
 			return {
 				indicatorDots: true,
@@ -153,6 +187,7 @@
 				soonList:[], //即将上映
 				weekList:[], //一周热榜
 				newsList:[], //最新上映
+				usBoxList:[], //北美票房
 			    hotList: [
 			            {
 			              id: 1,
@@ -182,7 +217,6 @@
 						  description: '描述4',
 						  rate:7
 						},
-						,
 						{
 						  id: 5,
 						  imageUrl: '/static/hot/5.jpg',
@@ -271,6 +305,13 @@
 				console.log("getNewMovie,result:");
 				console.log(result);
 				this.newsList = result.data; 
+			});
+			
+			getUsBoxMovie(0,10).then(result => {
+				//this.swiperList = item;
+				console.log("getUsBoxMovie,result:");
+				console.log(result);
+				this.usBoxList = result.data; 
 			});
 		
 			

@@ -93,6 +93,10 @@ Content-Type:application/json
     "count": 2
 }
 
+### 电影票房信息
+get http://175.178.126.10:8000/api/v1/piaomovie
+
+
 
 ### Below is the code of douban.http,use vscode extension REST Client to send request.
 ###正在热映影视

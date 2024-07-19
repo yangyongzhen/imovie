@@ -21,7 +21,7 @@
 </template>
 
 <script>
-	import { getNowHot, getSoonMovie, getNewMovie, getWeekMovie } from '@/api/home.js';
+	import { getNowHot, getSoonMovie, getNewMovie, getWeekMovie,getUsBoxMovie } from '@/api/home.js';
 	export default {
 		
 		data() {
@@ -196,6 +196,22 @@
 							}
 						});
 					}break;
+					case "5":{
+						getUsBoxMovie(this.pageNum,12).then(result => {
+							//this.swiperList = item;
+							//that.loadStatu = false
+							console.log("getUsBoxMovie,result:");
+							console.log(result);
+							that.movieInfo = that.movieInfo.concat(result.data);
+							this.count = result.count;
+							this.pageNum += result.data.length;
+							
+							if(this.pageNum == this.total){
+								that.loadStatu = true
+								that.listStatus = 'noMore'
+							}
+						});
+					}break;
 					default:break;
 				}
 			}
@@ -245,6 +261,18 @@
 					getWeekMovie(0,12).then(result => {
 						//this.swiperList = item;
 						console.log("getWeekMovie,result:");
+						console.log(result);
+						this.movieInfo = result.data; 
+						this.total = result.total;
+						this.count = result.count;
+						this.pageNum += result.data.length;
+					});
+				}break;
+				case "5":{
+					this.pageTitle = "北美票房榜";
+					getUsBoxMovie(0,12).then(result => {
+						//this.swiperList = item;
+						console.log("getUsBoxMovie,result:");
 						console.log(result);
 						this.movieInfo = result.data; 
 						this.total = result.total;
