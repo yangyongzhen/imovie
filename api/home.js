@@ -39,7 +39,7 @@ export const getTop250 = async (start,count) => {
       });
       return [];
     }
-    return response.data.list;
+    return response.data;
   } catch (error) {
     console.error('Network request failed:', error);
     uni.showToast({
@@ -232,6 +232,61 @@ export const getPiaoMovie = async () => {
 	console.log('getPiaoMovie request');
 	//const response = await uni.$http.post('/movie/in_theaters',{
     const response = await uni.$http.get('/piaomovie');
+	
+	console.log(response);
+    if (response.statusCode !== 200) {
+      uni.showToast({
+        title: '数据请求失败! ',
+        duration: 1500,
+        icon: 'none',
+      });
+      return [];
+    }
+    return response.data;
+  } catch (error) {
+    console.error('Network request failed:', error);
+    uni.showToast({
+      title: '网络请求失败! ',
+      duration: 1500,
+      icon: 'none',
+    });
+    return [];
+  }
+};
+
+// 检查更新
+export const checkUpdate = async (verCode,verName) => {
+  try {
+	console.log('checkUpdate request');
+    const response = await uni.$http.get('/updatecheck',{verCode:verCode,verName:verName});
+	
+	console.log(response);
+    if (response.statusCode !== 200) {
+      uni.showToast({
+        title: '数据请求失败! ',
+        duration: 1500,
+        icon: 'none',
+      });
+      return [];
+    }
+    return response.data;
+  } catch (error) {
+    console.error('Network request failed:', error);
+    uni.showToast({
+      title: '网络请求失败! ',
+      duration: 1500,
+      icon: 'none',
+    });
+    return [];
+  }
+};
+
+// 获取近期热播剧
+export const getTvHot = async (start,count) => {
+  try {
+	console.log('getTvHot request');
+	//const response = await uni.$http.post('/movie/in_theaters',{
+    const response = await uni.$http.post('/tvhot',{ start:start, count:count });
 	
 	console.log(response);
     if (response.statusCode !== 200) {

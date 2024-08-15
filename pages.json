@@ -9,7 +9,7 @@
 		{
 			"path": "pages/tabBar/list/list",
 			"style": {
-				"navigationBarTitleText": "知乎日报",
+				"navigationBarTitleText": "日报",
 				"enablePullDownRefresh": true,
 				"onReachBottomDistance":100
 			}
@@ -60,6 +60,75 @@
 		    }
 		    
 		}
+        ,{
+            "path" : "pages/tabBar/mine/yinsi/yinsi",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "隐私政策",
+                "enablePullDownRefresh": false
+            }
+            
+        },
+		{
+		    "path" : "pages/tabBar/mine/xieyi/xieyi",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "用户协议",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
+        ,{
+            "path" : "pages/tabBar/mine/report/report",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "留言反馈",
+                "enablePullDownRefresh": false
+            }
+            
+        },
+        {
+        	"path" : "pages/tabBar/index/detail/sharesource/sharesource",
+        	"style" : 
+        	{
+        		"navigationBarTitleText" : "贡献资源"
+        	}
+        },
+        {
+        	"path" : "pages/tabBar/index/detail/videoplay/videoplay",
+        	"style" : 
+        	{
+        		"navigationBarTitleText" : "电影观看"
+        	}
+        },
+        {
+        	"path" : "pages/upgrade/upgrade",
+        	"style" : 
+        	{
+        		"navigationBarTitleText" : ""
+        	}
+        },
+        {
+        	"path" : "pages/tabBar/mine/myfavs/myfavs",
+        	"style" : 
+        	{
+        		"navigationBarTitleText" : "我的收藏"
+        	}
+        },
+        {
+        	"path" : "pages/tabBar/mine/playhistory/playhistory",
+        	"style" : 
+        	{
+        		"navigationBarTitleText" : "播放历史"
+        	}
+        },
+        {
+        	"path" : "pages/tabBar/mine/playvideo/playvideo",
+        	"style" : 
+        	{
+        		"navigationBarTitleText" : "视频播放"
+        	}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

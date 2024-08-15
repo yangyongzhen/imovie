@@ -1,17 +1,10 @@
 <template>
 	<view class="content">
 		<view class="uni-margin-wrap">
-			<!-- <swiper class="swiper" circular :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval"
-				:duration="duration"  lazy-render>
-				
-				<swiper-item v-for="item in swiperList" :key="item.id">
-				    <image :src="item.imageUrl" :alt="item.title" mode="widthFix" class="swiper-image"></image>
-					 <view class="swiper-desc" v-if="item.description">{{ item.description }}</view>
-				</swiper-item>
-				
-			</swiper> -->
+
 			<view class="search-bar-box">
 			 <uni-search-bar 
+			       ref="searchBar"
 			       @confirm="onSearch" 
 			       placeholder="搜索" 
 			       @focus="onSearchFocus"
@@ -19,6 +12,19 @@
 			       :clearbutton="true"
 			     />
 			</view>
+			
+			<swiper class="swiper" circular :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval"
+				:duration="duration"  lazy-render>
+				
+				<swiper-item v-for="item in swiperList" :key="item.id" @click="toSwiper(item.id)">
+				    <image :src="item.imageUrl" :alt="item.title" mode="widthFix" class="swiper-image"></image>
+					 <view class="swiper-desc" v-if="item.title">{{ item.title }}</view>
+				</swiper-item>
+				
+			</swiper>
+			<!-- 公告通知 -->
+			<uni-notice-bar show-icon scrollable :speed="20" :text="notice"/>
+			
 			<!-- 今日票房====================== -->
 			<TodayBoxOffice/>
 			
@@ -136,12 +142,40 @@
 			    </view>  
 			    </scroll-view>
 				
+				<!-- 豆瓣高分===================== -->
+				<view class="title">
+					<view class="title-item">
+						豆瓣高分
+					</view>
+					<view class="title-more" @click="goToMore(5)">
+						查看更多 >
+					</view>
+				</view>
+				<scroll-view
+				   :scroll-x="true"
+				   :show-scrollbar="false"
+				   class="scroll"
+				 >
+				 <view class="movie-box">
+				       <view  v-for="(item, index) in top250List"
+				       :key="index"
+				       @click="goToDetail(item.id)" class="movie-item">
+				         <image class="movie-item-img" :src="item.cover" mode="heightFix" />
+				         <view class="movie-item-title">{{ ellipsis(item.title) }}</view>
+									  <view class="movie-rate">
+									  	<uni-rate :readonly="true" :value="item.rate/2" size=12 active-color="#ffaa00" color="#DADADA">
+									  	</uni-rate>
+									  	<text class="movie-rate-t">{{item.rate}}</text>
+									  </view>
+				       </view>
+				 </view>  
+				 </scroll-view>
 				<!-- 北美票房榜====================== -->
 				<view class="title">
 					<view class="title-item">
 						北美票房榜
 					</view>
-					<view class="title-more" @click="goToMore(5)">
+					<view class="title-more" @click="goToMore(6)">
 						查看更多 >
 					</view>
 				</view>
@@ -164,6 +198,43 @@
 				       </view>
 				 </view>  
 				 </scroll-view>
+				 
+				 <!-- 北美票房榜====================== -->
+				 <view class="title">
+				 	<view class="title-item">
+				 		近期热播剧
+				 	</view>
+				 	<view class="title-more" @click="goToMore(7)">
+				 		查看更多 >
+				 	</view>
+				 </view>
+				 <scroll-view
+				    :scroll-x="true"
+				    :show-scrollbar="false"
+				    class="scroll"
+				  >
+				  <view class="movie-box">
+				        <view  v-for="(item, index) in tvHotList"
+				        :key="index"
+				        @click="goToDetail(item.id)" class="movie-item">
+				          <image class="movie-item-img" :src="item.cover" mode="heightFix" />
+				          <view class="movie-item-title">{{ ellipsis(item.title) }}</view>
+				 					  <view class="movie-rate">
+				 					  	<uni-rate :readonly="true" :value="item.rate/2" size=12 active-color="#ffaa00" color="#DADADA">
+				 					  	</uni-rate>
+				 					  	<text class="movie-rate-t">{{item.rate}}</text>
+				 					  </view>
+				        </view>
+				  </view>  
+				  </scroll-view>
+				 
+				<!-- 升级弹出框 -->
+				 <uni-popup ref="popup" type="center" :mask-click="false" catchTouchMove>
+				   <view class="popup-content">
+					 <text>{{percentText}}</text>
+					 <progress  :percent="progress" :stroke-width="10" />
+				   </view>
+				 </uni-popup>
 			
 		</view>
 	</view>
@@ -171,7 +242,10 @@
 
 <script>
 	import TodayBoxOffice from '@/components/TodayBoxOffice.vue';
-	import { getSwiperList, getTop250,getNowHot,getSoonMovie,getWeekMovie,getNewMovie,getUsBoxMovie } from '@/api/home.js';
+	import { downloadApp,installApp } from '@/utils/upgrade.js';
+	import { getSwiperList, getTop250,getNowHot,getSoonMovie,
+	         getWeekMovie,getNewMovie,getUsBoxMovie,checkUpdate,getTvHot } from '@/api/home.js';
+	
 	export default {
 		components: {
 		    TodayBoxOffice
@@ -187,49 +261,30 @@
 				soonList:[], //即将上映
 				weekList:[], //一周热榜
 				newsList:[], //最新上映
+				top250List:[],//豆瓣高分
 				usBoxList:[], //北美票房
-			    hotList: [
-			            {
-			              id: 1,
-			              imageUrl: '/static/hot/1.jpg',
-			              title: '标题1',
-			              description: '描述1',
-						  rate:7
-			            },
-			            {
-			              id: 2,
-			              imageUrl: '/static/hot/2.jpg',
-			              title: '标题2',
-			              description: '描述2',
-						  rate:9
-			            },
-			            {
-			              id: 3,
-			              imageUrl: '/static/hot/3.jpg',
-			              title: '标题3',
-			              description: '描述3',
-						  rate:8
-			            },
-						{
-						  id: 4,
-						  imageUrl: '/static/hot/4.jpg',
-						  title: '标题4',
-						  description: '描述4',
-						  rate:7
-						},
-						{
-						  id: 5,
-						  imageUrl: '/static/hot/5.jpg',
-						  title: '标题5',
-						  description: '描述5',
-						  rate:6
-						}
-						]
+			    hotList: [],  //热映电影
+				tvHotList:[], //近期热播剧
+				notice:'',    //公告通知
+				//升级相关
+				downloadUrl: '', //APP下载链接
+				isDownloadFinish: false, //是否下载完成
+				progress: 0,  //升级进度条百分比
+				fileName: '', //下载后app本地路径名称
 			}
 		},
 		async onLoad() {
 			console.log("onLoad")
 			//console.log(this.swiperList)
+		},
+		computed: {
+			//百分比文字
+			percentText() {
+				let percent = this.progress;
+				if (typeof percent !== 'number' || isNaN(percent)) return '正在升级中...'
+				if (percent < 100) return `正在升级中... ${percent}%`
+				return '下载完成'
+			}
 		},
 		methods: {
 			// 名称超出显示省略号
@@ -251,16 +306,20 @@
 			},
 			onSearch(){
 				console.log("onSearch:")
-				uni.navigateTo({
-					url: `../index/search/search`,
-					animationType: 'pop-in',
-					animationDuration: 200
-				})
+				uni.navigateTo({url: `../index/search/search`});
 			},
 			onSearchFocus() {
+				  // 阻止默认的弹起键盘行为
+				 this.$refs.searchBar.blur();
 			      // 调用页面跳转方法
 			      uni.navigateTo({
 			        url: '../index/search/search',
+			      });
+			},
+			
+			toSwiper(id) {
+			      uni.navigateTo({
+			        url: `../index/detail/detail?id=${id}`,
 			      });
 			},
 			
@@ -271,6 +330,99 @@
 					animationType: 'pop-in',
 					animationDuration: 200
 				})
+			},
+			checkVersion(){
+				console.log("checkVersion:")
+				// 获取本地应用资源版本号
+				let version = "1.0.0"
+				let verCode = 0
+				const systemInfo = uni.getSystemInfoSync();
+				// 应用程序版本号
+				// #ifdef APP
+				version = plus.runtime.version;
+				verCode = plus.runtime.versionCode;
+				// #endif
+				// #ifdef H5
+				version = systemInfo.appVersion;
+				// #endif
+                console.log(version)
+				checkUpdate(verCode,version).then(result => {
+					console.log("checkUpdate,result:");
+					console.log(result);
+					this.notice = result.notice;
+					if(verCode < result.versionCode){
+						// 更新提醒
+						uni.showModal({
+							title: '发现新版本，是否更新',
+							content: '待更新版本：' + result.versionName +'\n更新说明:'+result.versionDesc,
+							success: res => {
+								// 点击确定
+								if (res.confirm) {
+									// 打开手机自带浏览器下载
+									//plus.runtime.openURL(result.downloadUrl+result.appName)
+									this.downloadUrl = result.downloadUrl+result.appName
+									console.log('downloadUrl:'+this.downloadUrl)
+									//显示升级进度
+									this.showPopup();
+									if (this.downloadUrl) {
+										this.isStartDownload = true
+										//开始下载App
+										downloadApp(this.downloadUrl, current => {
+											//下载进度
+											this.progress = current
+										}).then(fileName => {
+											//下载完成
+											this.isDownloadFinish = true
+											this.fileName = fileName
+											if (fileName) {
+												//自动安装App
+												this.handleInstallApp()
+											}else{
+												this.$refs.popup.close();
+												uni.showToast({
+													title: '下载失败',
+													icon: 'none',
+													duration:1500
+												})
+											}
+										}).catch(e => {
+											//console.log(e, 'e')
+											this.$refs.popup.close();
+											uni.showToast({
+												title: '升级失败,'+e,
+												icon: 'none',
+												duration:1500
+											})
+										})
+									} else {
+										this.$refs.popup.close();
+										uni.showToast({
+											title: '下载链接不存在',
+											icon: 'none',
+											duration:1500
+										})
+									}
+									//this.startProgress();
+								}
+							}
+						});
+					}
+					
+				})
+			},
+			showPopup() {
+			    this.$refs.popup.open();
+			},
+			//安装app
+			handleInstallApp() {
+				//下载完成才能安装，防止下载过程中点击
+				if (this.isDownloadFinish && this.fileName) {
+					this.$refs.popup.close();
+					installApp(this.fileName, () => {
+						//安装成功,关闭升级弹窗
+						 this.$refs.popup.close();
+					})
+				}
 			}
 		},
 		mounted() {
@@ -278,8 +430,10 @@
 			getSwiperList().then(item => {
 				this.swiperList = item;
 			});
-			getTop250(0,5).then(item => {
-				//this.swiperList = item;
+			getTop250(0,10).then(result => {
+				console.log("getTop250,result:");
+				console.log(result);
+				this.top250List = result.data; 
 			});
 			getNowHot(0,10,"郑州").then(result => {
 				//this.swiperList = item;
@@ -313,7 +467,15 @@
 				console.log(result);
 				this.usBoxList = result.data; 
 			});
+			
+			getTvHot(0,10).then(result => {
+				//this.swiperList = item;
+				console.log("getTvHot,result:");
+				console.log(result);
+				this.tvHotList = result.data; 
+			});
 		
+		   this.checkVersion();
 			
 		}
 	}
@@ -342,7 +504,7 @@
 		}
 		
 	.swiper {
-		height: 300rpx;
+		height: 350rpx;
 	}
 	
 	.swiper-image{
@@ -363,7 +525,7 @@
 	
 	.swiper-item {
 		display: block;
-		height: 300rpx;
+		height: 350rpx;
 		line-height: 300rpx;
 		text-align: center;
 	}
@@ -432,7 +594,16 @@
 	
 	.search-bar-box {
 	  background-color: #55aaff; 
-	  padding: 6rpx;
+	  padding: 0rpx;
 	  border-radius: 4rpx; 
+	}
+	
+	.popup-content {
+	  text-align: center;
+	  max-width: 500rpx; /* 限定最大高度 */
+	  overflow:hidden;
+	  background-color: #00aaff;
+	  border-radius: 10rpx; 
+	  padding: 50px;
 	}
 </style>

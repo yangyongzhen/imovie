@@ -1,5 +1,6 @@
 <template>
-	<view v-if="isLoaded">
+	<view>
+		<view v-if="isLoaded">
 			
 		<view class="banner">
 			<image class="banner-img" :src="mv.images"  mode="heightFix"></image>
@@ -8,23 +9,37 @@
 				<view  class="banner-title-small">
 					{{mv.genre}} / {{mv.countries}}
 				</view>
+				
 				<view class="banner-fav">
-					<view class="uni-fav">
-						<uni-icons size="18" type="plus" />
+					<view class="my-fav">
+						<uni-icons size="18" type="plus" color="#ffaa00"/>
 						<uni-badge class="uni-badge-left-margin" :text="mv.wish_count" :offset="[-5, -5]" type="info" :maxNum="100000" absolute="rightTop" size="small">
-							<view class="box"><text class="uni-fav-text">想看</text></view>
+							<view class="box"><text class="my-fav-text">想看</text></view>
 						</uni-badge>
 						<!-- <text class="uni-fav-text">想看</text> -->
 					</view>
-					<view class="uni-fav">
-						<uni-icons size="18" type="star" />
+					<view class="my-fav">
+						<uni-icons size="18" type="star" color="#ffaa00" />
 						<uni-badge class="uni-badge-left-margin" :text="mv.collect_count" :offset="[-5, -5]" type="info" :maxNum="100000" absolute="rightTop" size="small">
-							<view class="box"><text class="uni-fav-text">看过</text></view>
+							<view class="box"><text class="my-fav-text">看过</text></view>
 						</uni-badge>
 						<!-- <text class="uni-fav-text">看过</text> -->
 					</view>
 				</view>
+				<view class="banner-fav">
+					<view class="my-fav">
+						<uni-icons size="18" type="videocam" color="#ff007f" />
+						<view class="box"><text class="my-fav-text" @click="goToVideoPlay">播放</text></view>
+						<!-- <text class="uni-fav-text">想看</text> -->
+					</view>
+					<view class="my-fav">
+						<uni-icons size="18" type="link" color="#00aa00" />
+					    <view class="box"><text class="my-fav-text" @click="goToshareSource">贡献源</text></view>
+						<!-- <text class="uni-fav-text">看过</text> -->
+					</view>
+				</view>
 			</view>
+			
 		</view>
 		<uni-card :is-shadow="false"   extra="豆瓣评分 >" margin="20rpx">
 			<view class="movie-rate">
@@ -33,8 +48,17 @@
 				<text class="movie-rate-t">{{mv.rate}}</text>
 			</view>
 		</uni-card>
-		<view class="sub-title" >
-			简介
+		<view class="sub-title-box" >
+			<view class="sub-title" >
+				简介
+			</view>
+			<view class="my-uni-fav">
+				<uni-fav :checked="isFavorited" class="favBtn"  bgColor="#dddddd" bgColorChecked="#ffaa00" @click="favClick"/>
+			</view>
+			<!-- <view class="my-fav-collect">
+				<uni-icons size="18" type="star" />
+				<view class="box"><text class="my-fav-text">收藏</text></view>
+			</view> -->
 		</view>
 		<view class="description">
 		    <view :class="{'folded': isFolded}" v-html="mv.summary">
@@ -107,11 +131,13 @@
 			 </view>
 		 </view>
 	</view>
+	</view>
 
 </template>
 
 <script>
 	import { getMovieDetail,getMovieComment,getMoviePhoto } from '@/api/detail.js';
+	import favorites from '@/utils/favorites.js';
 	export default {
 		data() {
 			return {
@@ -124,12 +150,15 @@
 				pageNum: 0, // 评论列表初始页数
 				count:0,
 				total:0,
+				isFavorited: false,
 			}
 		},
 		onLoad(params) {
 			console.log('detail onload');
 			console.log(params);
 			this.id = params.id;
+			favorites.initFavorites();
+			this.checkFavorite();
 		},
 		methods: {
 			// 名称超出显示省略号
@@ -143,6 +172,17 @@
 			goToDetail(id){
 				console.log("goToDetail:")
 				console.log(id)
+			},
+			goToshareSource(){
+				console.log("goToshareSource:")
+				uni.navigateTo({url: `./sharesource/sharesource?id=${this.id}&title=${this.mv.title}`});
+			},
+			goToVideoPlay(){
+				console.log("goToVideoPlay:")
+				const mvString = encodeURIComponent(JSON.stringify(this.mv));
+				uni.navigateTo({
+					url: `./videoplay/videoplay?id=${this.id}&mv=${mvString}`
+				})
 			},
 			toggleDescription() {
 				this.isFolded = !this.isFolded;
@@ -180,6 +220,20 @@
 					
 					this.pageNum += result.data.length;
 				});
+			},
+			checkFavorite() {
+			      this.isFavorited = favorites.isFavorite(this.id);
+			},
+			favClick(){
+				if (this.isFavorited) {
+				    // 取消收藏逻辑
+					favorites.removeFavorite(this.id);
+					this.isFavorited = false;
+				} else {
+					this.mv.id = this.id;
+					favorites.addFavorite(this.mv);
+					this.isFavorited = true;
+				}
 			}
 		},
 		mounted() {
@@ -215,14 +269,14 @@
 	}
 </script>
 
-<style lang="scss" scoped>
-	$fav-height: 25px;
+<style lang="scss">
 	page {
 			display: flex;
 			flex-direction: column;
 			box-sizing: border-box;
 			background-color: #f8f4f5;
 			min-height: 100%;
+			width: 100%;
 			height: auto;
 		}
 		
@@ -236,8 +290,8 @@
 
 	.banner-img {
 		border-radius: 10rpx;
-		width: 220rpx;
-		height: 250rpx;
+		width: 240rpx;
+		height: 300rpx;
 	}
 
 	.banner-title {
@@ -273,14 +327,14 @@
 		display: flex;
 		flex-direction: row;
 	}
-	.uni-fav {
+	.my-fav {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;
 		width: 90px;
-		height: $fav-height;
-		line-height: $fav-height;
+		height: 25px;
+		line-height: 25px;
 		text-align: center;
 		border-radius: 3px;
 		background-color: white;
@@ -292,15 +346,30 @@
 		/* #endif */
 	}
 	
-	.uni-fav-text {
+	.my-fav-text {
 		/* #ifndef APP-NVUE */
 		display: flex;
 		/* #endif */
-		height: $fav-height;
-		line-height: $fav-height;
+		height: 25px;
+		line-height: 25px;
 		align-items: center;
 		justify-content: center;
 		font-size: 16px;
+	}
+	.my-uni-fav {
+		margin-right: 20rpx;
+	}
+	.favBtn {
+		width: 80px;
+		height: 25px;
+		font-size: 28px;
+		line-height: 25px;
+		text-align: center;
+		border-radius: 3px;
+		padding: 10rpx;
+		/* #ifdef H5 */
+		cursor: pointer;
+		/* #endif */
 	}
 
 	.uni-ellipsis {
@@ -320,6 +389,12 @@
 		margin-left: 14rpx;
 		font-size: 58rpx;
 		font-weight: bold;
+	}
+	
+	.sub-title-box {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
 	}
 	.sub-title {
 		padding-left: 20rpx;
@@ -471,5 +546,6 @@
 		justify-content: space-between;
 	    padding: 0rpx 20rpx 0rpx 20rpx;
 	    cursor: pointer;
+		margin-bottom: 10rpx;
 	}
 </style>

@@ -81,8 +81,38 @@ function attachImageUrl(srcUrl) {
 	}
 }
 
+/**
+ * 格式化日期时间
+ * @param {Date} date - 要格式化的日期对象，默认为当前日期时间
+ * @param {string} format - 格式化字符串，支持的占位符有：
+ *   - YYYY: 年份（4位）
+ *   - MM: 月份（2位，补0）
+ *   - DD: 日期（2位，补0）
+ *   - HH: 小时（2位，补0）
+ *   - mm: 分钟（2位，补0）
+ *   - ss: 秒数（2位，补0）
+ * @returns {string} 格式化后的日期时间字符串
+ */
+function formatDate(date = new Date(), format = 'YYYY-MM-DD HH:mm:ss') {
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+
+    return format
+        .replace('YYYY', year)
+        .replace('MM', String(month).padStart(2, '0'))
+        .replace('DD', String(day).padStart(2, '0'))
+        .replace('HH', String(hours).padStart(2, '0'))
+        .replace('mm', String(minutes).padStart(2, '0'))
+        .replace('ss', String(seconds).padStart(2, '0'));
+}
+
 export {
 	formatTime,
+	formatDate,
 	formatLocation,
 	dateUtils,
 	attachImageUrl,

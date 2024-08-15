@@ -81,3 +81,59 @@ export const getMoviePhoto = async (id,start,count) => {
     return [];
   }
 };
+
+// 提交影视片段资源
+export const postMovieSource = async (sid,source,uname,email,note,title) => {
+  try {
+	console.log('postMovieSource request');
+    const response = await uni.$http.post('/sourcemovie',{
+		sid:sid,url:source,user:uname,email:email,note:note,title:title});
+	
+	console.log(response);
+    if (response.statusCode !== 200) {
+      uni.showToast({
+        title: '数据请求失败! ',
+        duration: 1500,
+        icon: 'none',
+      });
+      return [];
+    }
+    return response.data;
+  } catch (error) {
+    console.error('Network request failed:', error);
+    uni.showToast({
+      title: '网络请求失败! ',
+      duration: 1500,
+      icon: 'none',
+    });
+    return [];
+  }
+};
+
+
+// 获取影视片段资源
+export const getMovieSource = async (sid) => {
+  try {
+	console.log('getMovieSource request');
+    const response = await uni.$http.get('/mvsource/'+sid);
+	
+	console.log(response);
+    if (response.statusCode !== 200) {
+      uni.showToast({
+        title: '数据请求失败! ',
+        duration: 1500,
+        icon: 'none',
+      });
+      return [];
+    }
+    return response.data;
+  } catch (error) {
+    console.error('Network request failed:', error);
+    uni.showToast({
+      title: '网络请求失败! ',
+      duration: 1500,
+      icon: 'none',
+    });
+    return [];
+  }
+};

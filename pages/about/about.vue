@@ -3,7 +3,11 @@
 		<view class="content">
 			<view class="qrcode">
 				<image src="/static/qrcode.png" @longtap="save"></image>
-				<text class="tip">扫码关注我的公众号[猫青年]</text>
+				<text class="tip">公众号[猫青年]</text>
+			</view>
+			<view class="qrcode">
+				<image src="/static/qun.png" @longtap="save"></image>
+				<text class="tip">扫码加入qq交流群:92381027,及时获取最新版体验</text>
 			</view>
 			<view class="desc">
 				<text class="code">iMovie</text>
@@ -23,8 +27,11 @@
 						<text space="nbsp">2. QQ:534117529 WeiXin:yongzhen1111</text>
 					</view>
 					<view class="source-cell">
-						<text space="nbsp">3. 源码资源:</text>
-						<uni-link href="https://download.csdn.net/download/qq8864/89377440" text="链接地址"></uni-link>
+						<text space="nbsp">3. 开源地址:</text>
+						<uni-link href="https://gitee.com/yyz116/imovie" text="https://gitee.com/yyz116/imovie"></uni-link>
+					</view>
+					<view class="source-cell">
+						<text space="nbsp">4. 下载链接:关注公众号[猫青年],回复"影视"关键词获取。</text>
 					</view>
 				</view>
 			</view>
@@ -183,6 +190,7 @@
 		display: flex;
 		align-items: center;
 		flex-direction: column;
+		margin-top: 10rpx;
 	}
 
 	.qrcode .tip {

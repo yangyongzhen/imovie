@@ -1,7 +1,6 @@
-# imovie 影视类小程序完整项目
+# imovie 个人影视类开源小程序完整项目分享
 > 爱影家，影视类小程序
-> 一个5年的web前端开源的uni-app快速开发模板，参考学习一同进步, 影视类小程序项目
-> 建议uni-app使用时间达到1年以上的程序员来学习
+> 一个基于web前端开源的uni-app快速开发模板，参考学习一同进步, 影视类小程序项目
 
 > 项目实现博文介绍:(https://blog.csdn.net/qq8864/article/details/122154385) uniapp小程序开发 | 从零实现一款影视类app 
 
@@ -9,6 +8,18 @@
 - 项目基于uni-app开发，使用vue.js开发，使用scss/sass编写样式，使用uni-app插件，实现了完整的电影类小程序功能，包括首页、电影详情、电影搜索、电影分类、电影评价、电影收藏、个人中心、电影评分、电影评论、头部导航、知乎日报列表、知乎日报详情、滑动操作、表单提交等功能。
 - 项目使用uni-app开发，可以直接在HBuilder X里面运行，也可以打包成H5、Android、IOS等平台。
 - 项目使用vue.js开发，熟悉vue.js开发，可以快速上手，学习vue.js开发。
+
+###体验地址
+由于微信小程序个人开发者无法发布资讯类小程序，于是打包为了android的app 供体验。
+
+APP下载链接：https://gitee.com/yyz116/imovie/tree/master/release/android_imovie_v1.0.0.apk
+
+或者搜索关注微信公众号[猫青年]，回复关键词"影视"获取下载链接。
+
+（安装时，需信任从文件管理器安装应用方能安装成功） 
+
+ **注: 因增加了播放和贡献影片资源功能，本项目仅用于学习小程序开发和音视频技术交流！请于下载体验后24小时内删除，感谢支持！** 
+
 
 ### 使用步骤
 1. 下载下来，解压成文件夹
@@ -18,29 +29,29 @@
 5. 体验完整的电影类小程序功能
 
 ### 项目截图
-![首页](doc/home.png)
-![电影详情页](doc/detail.png)
-![电影搜索页](doc/search.png)
-![电影更多页](doc/more.png)
-![电影评价页](doc/comment.png)
-![个人中心页](doc/mine.png)
-![电影评论](doc/comment.png)
-![知乎日报列表页](doc/zhihudaily.png)
-![知乎日报详情页](doc/zhihudailynews.png)
-![表单提交页](doc/report.png)
+![首页](https://gitee.com/yyz116/imovie/raw/master/doc/home.png)
+![电影详情页](https://gitee.com/yyz116/imovie/raw/master/doc/detail.png)
+![电影搜索页](https://gitee.com/yyz116/imovie/raw/master/doc/search.png)
+![电影更多页](https://gitee.com/yyz116/imovie/raw/master/doc/more.png)
+![电影评价页](https://gitee.com/yyz116/imovie/raw/master/doc/comment.png)
+![个人中心页](https://gitee.com/yyz116/imovie/raw/master/doc/mine.png)
+![电影评论](https://gitee.com/yyz116/imovie/raw/master/doc/comment.png)
+![知乎日报列表页](https://gitee.com/yyz116/imovie/raw/master/doc/zhihudaily.png)
+![知乎日报详情页](https://gitee.com/yyz116/imovie/raw/master/doc/zhihudailynews.png)
+![表单提交页](https://gitee.com/yyz116/imovie/raw/master/doc/report.png)
 
 
 ### `觉得不错，给个5星好评吧`
 
 | `QQ交流群(92381027)`         | `微信交流群（加我q:534117529,wx:yongzhen1111,备注"进群"）`                  |
 | ----------------------------|--------------------------- |
-|![QQ交流群](doc/qun.png)|![微信交流群](doc/qrcode.png)|
+|![QQ交流群](https://gitee.com/yyz116/imovie/raw/master/doc/qun.png)|![微信交流群](https://gitee.com/yyz116/imovie/raw/master/doc/qrcode.png)|
 | QQ群号：92381027 |微信号：yongzhen1111|
 
 ### `开源不易，需要花费很多精力，打个赏吧`
 | `微信打赏码`         | `支付宝打赏码`                  |
 | ----------------------------|--------------------------- |
-|![微信打赏二维码](doc/pay.jpg)
+|![微信打赏二维码](https://gitee.com/yyz116/imovie/raw/master/doc/pay.jpg)
 
 ### 常见问题
 1.如何运行？

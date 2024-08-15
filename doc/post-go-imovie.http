@@ -59,6 +59,15 @@ Content-Type:application/json
     "count": 1
 }
 
+### 近期热门剧集
+post http://175.178.126.10:8000/api/v1/tvhot
+Content-Type:application/json
+ 
+{
+    "start": 0,
+    "count": 10
+}
+
 ### 电影详情
 post http://175.178.126.10:8000/api/v1/detailmovie
 Content-Type:application/json
@@ -148,7 +157,7 @@ post https://api.douban.com/v2/movie/search
 Content-Type:application/json
  
 {
-    "q": "肖申克的救赎",
+    "q": "狐妖小红娘月红篇",
     "start": 0,
     "count": 1,
     "apikey": "0ab215a8b1977939201640fa14c66bab"

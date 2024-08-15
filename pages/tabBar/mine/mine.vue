@@ -15,12 +15,13 @@
 							      <view class="center_name">
 							      	特立独行的猫
 							      </view>
-							      <view class="center_vip">
+								  blog.csdn.net/qq8864
+							      <!-- <view class="center_vip">
 							      	<uni-icons type="vip" size="14"></uni-icons>
 							      	<view class="vip_text">
 							      		<text>普通会员</text>
 							      	</view>
-							      </view>
+							      </view> -->
 							      <!-- 其他个人中心内容 -->
 							    </view>
 							
@@ -34,18 +35,34 @@
 
 		<!-- 统计 -->
 		<view class="count">
-			<view class="cell"> 8  <text style="color: #AAAAAA;">收藏影视</text> </view>
-			<view class="cell"> 14 <text style="color: #AAAAAA;">历史记录</text> </view>
-			<view class="cell"> 18 <text style="color: #AAAAAA;">关注信息</text> </view>
-			<view class="cell"> 84 <text style="color: #AAAAAA;">我的足迹</text> </view>
+			<view class="cell" @click="goToMyfavs"> {{favCount}} <text style="color: #AAAAAA;">收藏影视</text> </view>
+			<view class="cell" @click="goToHistory"> {{historyCount}} <text style="color: #AAAAAA;">播放历史</text> </view>
+			<view class="cell"> 0 <text style="color: #AAAAAA;">关注信息</text> </view>
+			<view class="cell"> 0 <text style="color: #AAAAAA;">我的足迹</text> </view>
+		</view>
+		<view class="grid-box">
+		    <uni-section title="功能列表" >
+				<uni-grid :column="4" :show-border="false" :square="false">
+				  <!-- v-for 循环渲染按钮 -->
+				  <uni-grid-item v-for="(item, index) in buttons" :key="index" @click="onClickButton(item)">
+					  <view class="grid-item">
+					  	<uni-icons :type="item.icon" :color="item.color" size="28"></uni-icons>
+					  	<text class="grid-text">{{item.text}}</text>
+					  </view>
+				  </uni-grid-item>
+				</uni-grid>
+			</uni-section>
 		</view>
 		<!-- 其它 -->
 		<view class="extra">
 			<uni-list>
 				<uni-list-item showArrow title="我的消息" ></uni-list-item>
-				<uni-list-item showArrow title="意见反馈" ></uni-list-item>
+				<uni-list-item showArrow title="意见反馈" link to="/pages/tabBar/mine/report/report"></uni-list-item>
 				<uni-list-item showArrow title="分享链接" @click.native="onShareClick($event,1)" link></uni-list-item>
-				<uni-list-item showArrow title="关于我们" link to="/pages/about/about?item=2"></uni-list-item>
+				<uni-list-item showArrow title="检查更新" @click.native="onUpdateCheck()" link></uni-list-item>
+				<uni-list-item showArrow title="关于我们"   to="/pages/about/about"></uni-list-item>
+				<uni-list-item showArrow title="用户协议"  :to="`/pages/tabBar/mine/xieyi/xieyi`"></uni-list-item>
+				<uni-list-item showArrow title="隐私政策"  :to="`/pages/tabBar/mine/yinsi/yinsi`"></uni-list-item>
 				<!-- <uni-list-item showArrow title="关于我们" link="navigateTo" :to="'/pages/about/about?item=1'"></uni-list-item> -->
 			</uni-list>
 		</view>
@@ -53,12 +70,72 @@
 </template>
 
 <script>
+	import favorites from '@/utils/favorites';
+	import playhistory from '@/utils/playhistory.js';
+	import { checkUpdate } from '@/api/home.js';
 	export default {
 		data() {
 			return {
-				isLoggedIn: true,
-				userInfo: {}
+				isLoggedIn: false,
+				userInfo: {},
+				favCount:0,
+				historyCount:0,
+				// 功能按钮的数据数组
+				buttons: [
+					{
+					  icon: 'videocam', 
+					  text: '电视直播',
+					  color: '#55aaff',
+					  // 可以添加其他需要的数据，比如跳转的页面路径
+					  pagePath: '/pages/home/home'
+					},
+					{
+					  icon: 'videocam',
+					  text: '本地视频',
+					  color: '#ff0000',
+					  pagePath: '/pages/setting/setting'
+					},
+					{
+					  icon: 'link',
+					  text: '播放链接',
+					  color: '#aa55ff',
+					  pagePath: '/pages/tabBar/mine/playvideo/playvideo'
+					},
+					{
+					  icon: 'hand-up',
+					  text: '分享APP',
+					  color: '#ffaa00',
+					  pagePath: '/pages/setting/setting'
+					},
+					{
+					  icon: 'chat',
+					  text: '加入群聊',
+					  color: '#00aa00',
+					  pagePath: '/pages/setting/setting'
+					},
+					{
+					  icon: 'more',
+					  text: '其他功能',
+					  color: '',
+					  pagePath: '/pages/setting/setting'
+					},
+					// ...其他按钮数据
+				  ],
 			}
+		},
+		onLoad() {
+			console.log('mine onload');
+			favorites.initFavorites();
+			playhistory.initPlayHistory();
+			this.favCount = favorites.getFavoriteCount();
+			this.historyCount = playhistory.getPlayRecordCount();
+			
+		},
+		onShow() {
+		    // 每次切换到该页面时执行的操作
+			console.log("mine onShow");
+			this.favCount = favorites.getFavoriteCount();
+			this.historyCount = playhistory.getPlayRecordCount();
 		},
 		computed: {
 			
@@ -70,10 +147,126 @@
 				onLoginClick() {
 			      // 跳转至登录页面
 			      //uni.navigateTo({ url: '/pages/login/login' });
+				  uni.showToast({
+				    title: '登录暂未开放',
+				    icon: 'success',
+				    duration: 2000
+				  });
 			    },
+				onClickButton(item) {
+					console.log(item.text);
+					if(item.text ==='电视直播' || item.text ==='本地视频'){
+						uni.showToast({
+						  title: '暂未开放，敬请期待',
+						  icon: 'none',
+						  duration: 2000
+						});
+						return;
+					}
+					if(item.text ==='分享APP'){
+						uni.showModal({
+							title: '分享链接',
+							content: '爱影app下载地址:\n' + "https://www.123pan.com/s/d27lVv-zFrSv.html",
+							showCancel:false,
+							success: res => {
+								uni.setClipboardData({
+								    data: "https://www.123pan.com/s/d27lVv-5FrSv.html",
+								    success: function () {
+								      // 可以在这里添加一些提示信息，告知用户内容已复制
+								      uni.showToast({
+								        title: '链接已复制',
+								        icon: 'success',
+								        duration: 2000
+								      });
+								    }
+								  });
+							}
+						});
+						return;
+					}
+					if(item.text ==='加入群聊'){
+						uni.showToast({
+						  title: '加Q:534117529',
+						  icon: 'success',
+						  duration: 2000
+						});
+						return;
+					}
+					if (item && item.pagePath) {
+						console.log(item.pagePath);
+					    // 如果 pagePath 存在，使用 uni.navigateTo 进行页面跳转
+					    uni.navigateTo({
+						  url: item.pagePath
+					    });
+					}
+				},
+				goToMyfavs(){
+					uni.navigateTo({ url: '/pages/tabBar/mine/myfavs/myfavs' });
+				},
+				goToHistory(){
+					uni.navigateTo({ url: '/pages/tabBar/mine/playhistory/playhistory' });
+				},
+				onUpdateCheck() {
+				  // 检查更新
+				  console.log("checkVersion:")
+				  // 获取本地应用资源版本号
+				  let version = "1.0.0"
+				  let verCode = 0
+				  const systemInfo = uni.getSystemInfoSync();
+				  // 应用程序版本号
+				  // #ifdef APP
+				  version = plus.runtime.version;
+				  verCode = plus.runtime.versionCode;
+				  // #endif
+				  // #ifdef H5
+				  version = systemInfo.appVersion;
+				  // #endif
+				  console.log(version)
+				  checkUpdate(verCode,version).then(result => {
+						console.log("checkUpdate,result:");
+						console.log(result);
+						this.notice = result.notice;
+						if(verCode < result.versionCode){
+							uni.showModal({
+								title: '有新版本，请及时更新',
+								content: '待更新版本：' + result.versionName +'\n更新说明:'+result.versionDesc,
+								showCancel:false,
+								success: res => {
+								}
+							});
+						}else{
+							uni.showModal({
+								title: '当前已是最新版本',
+								content: '版本号：' + result.versionName,
+								showCancel:false,
+								success: res => {
+								}
+							});
+						}
+				   });
+				},
 				onShareClick($event,args){
 					console.log($event);
 					console.log("onShareClick");
+					uni.showModal({
+						title: '分享链接',
+						content: '爱影app下载地址:\n' + "https://www.123pan.com/s/d27lVv-zFrSv.html",
+						showCancel:false,
+						success: res => {
+							uni.setClipboardData({
+							    data: "https://www.123pan.com/s/d27lVv-5FrSv.html",
+							    success: function () {
+							      // 可以在这里添加一些提示信息，告知用户内容已复制
+							      uni.showToast({
+							        title: '链接已复制',
+							        icon: 'success',
+							        duration: 2000
+							      });
+							    }
+							  });
+						}
+					});
+					/*
 					uni.share({
 						provider: "weixin",
 						scene: "WXSceneSession",
@@ -89,6 +282,7 @@
 							console.log("fail:" + JSON.stringify(err));
 						}
 					});
+					*/
 				}
 			
 		}
@@ -102,7 +296,7 @@
 
 	.top {
 		width: 100%;
-		height: 200rpx;
+		height: 300rpx;
 		// background: #23EBB9;
 		background: #2979ff;
 		padding-top: 30rpx;
@@ -111,7 +305,7 @@
 
 	.center {
 		width: 95%;
-		height: 160rpx;
+		height: 260rpx;
 		background: #55aaff;
 		display: flex;
 		flex-direction: column;
@@ -284,6 +478,7 @@
 			padding-top: 20rpx;
 			font-size: 27rpx;
 			color: #333;
+			cursor: pointer;
 		}
 
 		text {
@@ -337,7 +532,7 @@
 	}
 
 	.extra {
-		margin: 10rpx 20rpx;
+		margin: -10rpx 20rpx;
 		background-color: #fff;
 		border-radius: 4rpx;
 
@@ -380,5 +575,25 @@
 	  text-align: center;
 	  border-radius: 35rpx; /* 设置圆角 */
 	  cursor: pointer; /* 设置鼠标样式为指针 */
+	}
+	
+	.grid-box {
+	  padding: 20rpx;
+	}
+	.grid-item {
+	 flex: 1;
+	// position: relative;
+	/* #ifndef APP-NVUE */
+	 display: flex;
+	/* #endif */
+	 flex-direction: column;
+	 align-items: center;
+	 justify-content: center;
+	 padding: 0rpx 0;
+	}
+	.grid-text {
+	  display: block;
+	  font-size: 20rpx; 
+	  padding: 10rpx 0;
 	}
 </style>
