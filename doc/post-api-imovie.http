@@ -1,0 +1,167 @@
+
+### 1.首页影视轮播图
+get http://175.178.126.10:8000/api/v1/swiperdata
+
+### 2.首页影视轮播图
+get https://yangqq.site/api/v1/swiperdata
+
+### 3.电影票房信息
+get http://175.178.126.10:8000/api/v1/piaomovie
+
+
+### 4.正在热映的电影
+post http://175.178.126.10:8000/api/v1/hotmovie
+Content-Type:application/json
+ 
+{
+    "start": 0,
+    "count": 1,
+    "city": "郑州"
+}
+
+### 5.即将上映
+post http://175.178.126.10:8000/api/v1/soonmovie
+Content-Type:application/json
+ 
+{
+    "start": 0,
+    "count": 1
+}
+
+### 6.最新上映
+post http://175.178.126.10:8000/api/v1/newmovie
+Content-Type:application/json
+ 
+{
+    "start": 0,
+    "count": 1
+}
+
+### 7.电影周榜
+post http://175.178.126.10:8000/api/v1/weekmovie
+Content-Type:application/json
+ 
+{
+    "start": 0,
+    "count": 1
+}
+
+### 8.北美票房榜
+post http://175.178.126.10:8000/api/v1/usmovie
+Content-Type:application/json
+ 
+{
+    "start": 0,
+    "count": 1
+}
+
+### 9.近期热门剧集
+post http://175.178.126.10:8000/api/v1/tvhot
+Content-Type:application/json
+ 
+{
+    "start": 0,
+    "count": 10
+}
+
+### 10.电视直播()
+post http://175.178.126.10:8000/api/v1/tvlives
+Content-Type:application/json
+ 
+{
+    "start": 0,
+    "count": 10
+}
+
+### 11.电影详情
+post http://175.178.126.10:8000/api/v1/detailmovie
+Content-Type:application/json
+ 
+{
+    "id": "1292052"
+}
+### 12.电影短评
+post http://175.178.126.10:8000/api/v1/commentmovie
+Content-Type:application/json
+ 
+{
+    "id": "1292052",
+    "start": 0,
+    "count": 2
+}
+### 13.电影剧照
+post http://175.178.126.10:8000/api/v1/photomovie
+Content-Type:application/json
+ 
+{
+    "id": "1292052",
+    "start": 0,
+    "count": 2
+}
+### 14.电影top250 movie request /api/v1/topmovie
+post http://175.178.126.10:8000/api/v1/topmovie
+Content-Type:application/json
+ 
+{
+    "start": 0,
+    "count": 2
+}
+
+### 15.电影搜索
+post http://175.178.126.10:8000/api/v1/searchmovie
+Content-Type:application/json
+ 
+{
+    "q": "肖申克的救赎",
+    "start": 0,
+    "count": 1
+}
+### 16.影视播放资源获取
+get http://175.178.126.10:8000/api/v1/mvsource/1292052
+
+
+### 17.获取电影合集
+get http://175.178.126.10:8000/api/v1/getmvmenus?kind=''
+
+###  18.留言反馈提交 /api/v1/feedback
+post http://175.178.126.10:8000/api/v1/feedback
+Content-Type:application/json
+ 
+{
+    "user": "yang",
+    "email": "11@qq.com",
+    "note": "求片"
+}
+### 19.音乐搜索
+post http://175.178.126.10:8000/api/v1/musicsearch
+Content-Type:application/json
+
+{
+    "q": "花心",
+    "start": 0,
+    "count": 1
+}
+
+### 20.新歌热歌榜
+post http://175.178.126.10:8000/api/v1/musicmenus
+Content-Type:application/json
+
+{
+    "kind": "topWyMusic",
+    "start": 0,
+    "count": 1
+}
+
+### 21.知乎日报
+get http://175.178.126.10:8000/api/v1/zhihunews/20240720
+
+### 22.知乎日报 详情
+get http://175.178.126.10:8000/api/v1/zhihudetail/9773231
+
+
+### 23.软件升级，检查更新
+get http://175.178.126.10:8000/api/v1/updatecheck?verCode=5&verName=''
+
+
+### 24.根据音乐id搜索对应的歌词
+get http://175.178.126.10:8000/api/v1/musicsearchlrc?id=543656129&kind=wy

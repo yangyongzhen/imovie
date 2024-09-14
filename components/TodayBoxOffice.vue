@@ -13,7 +13,7 @@
       <view class="item" v-for="(item, index) in topMovies.data" :key="index">
         <view class="rank">{{ item.top }}</view>
         <view class="info">
-          <text class="name">{{ item.name }}</text>
+          <text class="name">{{ ellipsis(item.name) }}</text>
           <text class="release-date">{{ item.release_date }}</text>
           <text class="box-office">票房: {{ item.box_million }}</text>
           <text class="share">占比: {{ item.share_box }}</text>
@@ -42,6 +42,14 @@
 		});
 	},
 	methods: {
+		// 名称超出显示省略号
+		ellipsis(value) {
+			if (!value) return '';
+			if (value.length > 7) {
+				return value.slice(0, 6) + '...'
+			}
+			return value
+		},
 	}
 };
 </script>
@@ -86,7 +94,7 @@
   flex-direction: column;
   align-items: center;
   margin: 0 10rpx;
-  background-color: #fff;
+  background-color: rgba(85, 170, 255, 0.6);
   padding: 20rpx;
   border-radius: 15rpx;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -113,6 +121,6 @@
 
 .release-date, .box-office, .share {
   font-size: 20rpx;
-  color: #666;
+  color: #ffffff;
 }
 </style>

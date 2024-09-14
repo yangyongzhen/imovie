@@ -1,0 +1,198 @@
+### 话语热榜
+post http://175.178.126.10:8000/api/v1/createmvmenu
+Content-Type:application/json
+ 
+{
+    "kind": "menu1",
+    "title": "华语经典",
+    "names": ["霸王别姬","英雄本色","甜蜜蜜","东邪西毒","无间道","卧虎藏龙","大话西游","甲方乙方","钢的琴","阳光灿烂的日子","万箭穿心"]
+}
+
+### 欧美热榜
+post http://175.178.126.10:8000/api/v1/createmvmenu
+Content-Type:application/json
+ 
+{
+    "kind": "menu2",
+    "title": "欧美热榜",
+    "names": ["美国往事","这个杀手不太冷","大都会","奇爱博士","夺魂索","楚门的世界","蓝白红之蓝","末代皇帝","星际穿越","穆赫兰道"]
+}
+
+### 亚洲热榜
+post http://175.178.126.10:8000/api/v1/createmvmenu
+Content-Type:application/json
+ 
+{
+    "kind": "menu3",
+    "title": "亚洲经典",
+    "names": ["辩护人","诗","杀人回忆","生死谍变","三傻大闹宝莱坞","坂本龙一：杰作","红辣椒","天空之城","印式英语","情书","小森林"]
+}
+
+### 译制片榜
+post http://175.178.126.10:8000/api/v1/createmvmenu
+Content-Type:application/json
+ 
+{
+    "kind": "menu4",
+    "title": "译制片榜",
+    "names": ["乱世佳人","尼罗河上的惨案","茜茜公主","大篷车","追捕","流浪者","简·爱","王子复仇记","音乐之声","虎口脱险"]
+}
+
+### 中小学生
+post http://175.178.126.10:8000/api/v1/createmvmenu
+Content-Type:application/json
+ 
+{
+    "kind": "menu6",
+    "title": "中小学生必看电影",
+    "names": ["小鞋子","天堂电影院","机器人总动员","听见天堂","绿野仙踪","狮子王","放牛班的春天","秘密花园","海洋之歌","天生一对","地球脉动"]
+}
+
+### 初中生必看十部励志电影
+post http://175.178.126.10:8000/api/v1/createmvmenu
+Content-Type:application/json
+ 
+{
+    "kind": "menu7",
+    "title": "初中生必看十部励志电影",
+    "names": ["垫底辣妹","风雨哈佛路","追梦赤子心","叫我第一名","黑暗中的舞者","舞动人生","听见天堂","勇敢的心","摔跤吧！爸爸","爆裂鼓手","阿甘正传","了不起的菲丽西"]
+}
+
+### 邵氏经典
+post http://175.178.126.10:8000/api/v1/createmvmenu
+Content-Type:application/json
+ 
+{
+    "kind": "menu5",
+    "title": "邵氏经典",
+    "names": ["独臂刀","大醉侠","保镖","流星蝴蝶剑","江湖奇侠","游侠二","少林三十六房","侠女","金燕子","龙门客栈","金玉良缘红楼梦"]
+}
+
+### 经典黑帮电影
+post http://175.178.126.10:8000/api/v1/createmvmenu
+Content-Type:application/json
+ 
+{
+    "kind": "menu8",
+    "title": "经典黑帮电影",
+    "names": ["上帝之城","新世界","教父","教父2","美国往事","极恶非道","卑劣的街头","艋钾","跛豪","导火线","湾仔之虎","黑帮暴徒","濠江风云","旺角风云","无间道","新英雄本色","古惑仔"]
+}
+
+### 获取音乐菜单
+post http://175.178.126.10:8000/api/v1/musicmenus
+Content-Type:application/json
+ 
+{
+    "start": 0,
+    "count": 2,
+    "kind":"topWyMusic"
+}
+
+### 音乐搜索
+post http://175.178.126.10:8000/api/v1/musicsearch
+Content-Type:application/json
+ 
+{
+    "q":"花心",
+    "start": 0,
+    "count": 2,
+}
+
+### 获取电影合集
+### Swiper request /api/v1/getmvmenus
+get http://175.178.126.10:8000/api/v1/getmvmenus?kind=menu1
+
+### Swiper request /api/v1/swiperdata
+get http://175.178.126.10:8000/api/v1/swiperdata
+
+### Hot movie request /api/v1/hotmovie
+
+### 即将上映
+post http://175.178.126.10:8000/api/v1/soonmovie
+Content-Type:application/json
+ 
+{
+    "start": 0,
+    "count": 1
+}
+
+### 最新上映
+post http://175.178.126.10:8000/api/v1/newmovie
+Content-Type:application/json
+ 
+{
+    "start": 0,
+    "count": 1
+}
+
+### 周榜
+post http://175.178.126.10:8000/api/v1/weekmovie
+Content-Type:application/json
+ 
+{
+    "start": 0,
+    "count": 1
+}
+
+### 北美票房榜
+post http://175.178.126.10:8000/api/v1/usmovie
+Content-Type:application/json
+ 
+{
+    "start": 0,
+    "count": 1
+}
+
+### 近期热门剧集
+post http://175.178.126.10:8000/api/v1/tvhot
+Content-Type:application/json
+ 
+{
+    "start": 0,
+    "count": 10
+}
+
+### 电影详情
+post http://175.178.126.10:8000/api/v1/detailmovie
+Content-Type:application/json
+ 
+{
+    "id": "1292052"
+}
+### 电影短评
+post http://175.178.126.10:8000/api/v1/commentmovie
+Content-Type:application/json
+ 
+{
+    "id": "1292052",
+    "start": 0,
+    "count": 2
+}
+### 电影剧照
+post http://175.178.126.10:8000/api/v1/photomovie
+Content-Type:application/json
+ 
+{
+    "id": "1292052",
+    "start": 0,
+    "count": 2
+}
+### top250 movie request /api/v1/topmovie
+post http://175.178.126.10:8000/api/v1/topmovie
+Content-Type:application/json
+ 
+{
+    "start": 0,
+    "count": 2
+}
+
+### 电影票房信息
+get http://175.178.126.10:8000/api/v1/piaomovie
+
+
+
+### 知乎热报
+### 不能用 0df993c66c0c636e29ecbb5344252a4a  "msg": "invalid_credencial2","code": 109,      
+get https://news-at.zhihu.com/api/4/news/latest
+
+

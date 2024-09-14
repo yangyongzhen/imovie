@@ -7,6 +7,7 @@
 			       ref="searchBar"
 			       @confirm="onSearch" 
 			       placeholder="搜索" 
+				   clearButton="none"
 			       @focus="onSearchFocus"
 			       :maxlength="50" 
 			       :clearbutton="true"
@@ -265,7 +266,7 @@
 				usBoxList:[], //北美票房
 			    hotList: [],  //热映电影
 				tvHotList:[], //近期热播剧
-				notice:'',    //公告通知
+				notice:'如果看到这个公告，抱歉，后台服务到期了。请搜索并关注微信公众号[猫青年]，及时获取更新。',    //公告通知
 				//升级相关
 				downloadUrl: '', //APP下载链接
 				isDownloadFinish: false, //是否下载完成
@@ -276,6 +277,9 @@
 		async onLoad() {
 			console.log("onLoad")
 			//console.log(this.swiperList)
+		},
+		onShow(){
+			console.log("onShow")
 		},
 		computed: {
 			//百分比文字
@@ -349,7 +353,9 @@
 				checkUpdate(verCode,version).then(result => {
 					console.log("checkUpdate,result:");
 					console.log(result);
-					this.notice = result.notice;
+					if( result.notice !==''){
+						this.notice = result.notice;
+					}
 					if(verCode < result.versionCode){
 						// 更新提醒
 						uni.showModal({
@@ -593,7 +599,7 @@
 	}
 	
 	.search-bar-box {
-	  background-color: #55aaff; 
+	  background-color: rgba(85, 170, 255, 0.6);
 	  padding: 0rpx;
 	  border-radius: 4rpx; 
 	}

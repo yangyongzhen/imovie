@@ -17,6 +17,9 @@
 			<view class="item-button">
 				<button type="primary" @click="onPlayClick">播放</button>
 			</view>
+			<view class="item-button">
+				<button type="primary" @click="chooseVideo">选择视频</button>
+			</view>
 			
 		</view>
 		
@@ -77,9 +80,26 @@
 			        setTimeout(() => {
 						console.log(this.source);
 			            this.videoContext.play();
-			        }, 500); // 500毫秒
+			        }, 200); // 200毫秒
 			    }
 			});
+		},
+		chooseVideo() {
+		      uni.chooseVideo({
+		        sourceType: ['album'], // 从相册或相机选择
+				compressed:false,
+		        success: (res) => {
+		          this.vsrc = res.tempFilePath;
+		          this.$nextTick(() => {
+		              if (this.videoContext) {
+		                  setTimeout(() => {
+		          			console.log(this.vsrc);
+		                      this.videoContext.play();
+		                  }, 200); // 200毫秒
+		              }
+		          });
+		        }
+		      });
 		},
     }
 }

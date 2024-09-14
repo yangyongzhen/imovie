@@ -7,6 +7,7 @@
 				      autoplay="false"
 				      loop="false"
 				      muted="false"
+					  :title="title"
 					  :play-strategy="2"
 					  @fullscreenchange="onFullscreenChange"
 					  @tap="onTapVideo"
@@ -14,10 +15,11 @@
 					  enable-play-gesture="false"
 					  @timeupdate="onTimeUpdate"
                       @error="videoErrorCallback" :custom-cache="false">
-				</video>
 				<cover-view v-if="showTitle" class="fullscreen-title">
 				      <text class="title">{{ title }}</text>
 				</cover-view>
+				</video>
+				
             </view>
         </view>
 		<uni-card :is-shadow="false"  :title="mv.title" extra="豆瓣评分 >" margin="10rpx">
@@ -90,7 +92,7 @@
 			tvurls:[],  // 电视资源
 			selectedIndex: -1, //  电视集数 初始化选中索引为 -1，表示没有选中任何项
 			isFullscreen: false,
-		    showTitle: true,
+		    showTitle: false,
 		    title: '我的视频标题',
 			timeoutId: null,
         }
@@ -119,8 +121,8 @@
 			this.mv = mv_;
 			this.history.mv = mv_;
 			this.title = mv_.title
-			if(this.selectedIndex > 0){
-				this.title = this.mv.title + ` 第${this.selectedIndex}集`
+			if(this.selectedIndex >= 0){
+				this.title = this.mv.title + ` 第${this.selectedIndex+1}集`
 			}
 		}
 		playhistory.initPlayHistory();
@@ -154,7 +156,7 @@
 							console.log(this.playTime);
 							this.videoContext.seek(parseInt(this.playTime));
 				            this.videoContext.play();
-				        }, 500); // 500毫秒
+				        }, 200); // 200毫秒
 				    }
 				});
 			}else if (Array.isArray(result.tvurls) && result.tvurls.length > 0) {
@@ -209,15 +211,15 @@
 		  const url = this.tvurls[index];
 		  console.log('play:', url);
 		  this.vsrc = url;
-		  if(this.selectedIndex > 0){
-		  	this.title = this.mv.title + ` 第${this.selectedIndex}集`
+		  if(this.selectedIndex >= 0){
+		  	this.title = this.mv.title + ` 第${this.selectedIndex+1}集`
 		  }
 		  this.$nextTick(() => {
 		      if (this.videoContext) {
 		          setTimeout(() => {
 					  this.videoContext.seek(parseInt(ptime));
 		              this.videoContext.play();
-		          }, 500); // 延时500毫秒
+		          }, 200); // 延时200毫秒
 		      }
 		  });
 		  this.closePopup();
@@ -313,7 +315,7 @@
 	    overflow: hidden;
 	    text-overflow: ellipsis;
 	    display: -webkit-box;
-	    -webkit-line-clamp: 4; /* 控制显示行数 */
+	    line-clamp: 4; /* 控制显示行数 */
 	    -webkit-box-orient: vertical;
 	}
 	.toggle-button {
@@ -379,6 +381,7 @@
 	  top: 0;
 	  left: 0;
 	  right: 0;
+	  visibility: visible;
 	  background-color: rgba(0, 0, 0, 0.5); /* 背景颜色 */
 	  color: #fff; /* 文字颜色 */
 	  padding: 10rpx;

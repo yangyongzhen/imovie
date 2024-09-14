@@ -63,11 +63,11 @@
 			},
 			onSearch(value) {
 				console.log('搜索内容:', value);
-				getMovieSearch(value,0,10).then(result => {
-					console.log("getMovieSearch,result:");
-					console.log(result);
-					this.out = result.data;
-				});
+				// getMovieSearch(value,0,10).then(result => {
+				// 	console.log("getMovieSearch,result:");
+				// 	console.log(result);
+				// 	this.out = result.data;
+				// });
 			},
 
 		}
@@ -89,7 +89,7 @@
 	}
 	
 	.search-bar-box {
-	  background-color: #55aaff; 
+	  background-color: rgba(85, 170, 255, 0.6);
 	  padding: 6rpx;
 	  border-radius: 4rpx; 
 	}

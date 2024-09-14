@@ -27,7 +27,7 @@
 						<text space="nbsp">2. QQ:534117529 WeiXin:yongzhen1111</text>
 					</view>
 					<view class="source-cell">
-						<text space="nbsp">3. 开源地址:</text>
+						<text space="nbsp">3. 项目源码开源地址:</text>
 						<uni-link href="https://gitee.com/yyz116/imovie" text="https://gitee.com/yyz116/imovie"></uni-link>
 					</view>
 					<view class="source-cell">

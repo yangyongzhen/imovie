@@ -109,6 +109,32 @@ function formatDate(date = new Date(), format = 'YYYY-MM-DD HH:mm:ss') {
         .replace('mm', String(minutes).padStart(2, '0'))
         .replace('ss', String(seconds).padStart(2, '0'));
 }
+/**
+ * 歌词解析
+ * @param {lrcContent} string - 歌词内容
+ * @returns {lyrics} 对象数组
+ */
+function parseLyric(lrcContent) {
+    const lines = lrcContent.split('\n');
+    const lyrics = [];
+
+    lines.forEach(line => {
+        const match = line.match(/\[(\d{2}):(\d{2})\.(\d{2,3})\]/);
+        if (match) {
+            const minutes = parseInt(match[1]);
+            const seconds = parseInt(match[2]);
+            const milliseconds = parseInt(match[3]);
+
+            const time = minutes * 60 * 1000 + seconds * 1000 + milliseconds;
+
+            // 提取歌词文本
+            const text = line.replace(/\[\d{2}:\d{2}\.\d{2,3}\]/g, '').trim();
+            lyrics.push({ time, text });
+        }
+    });
+
+    return lyrics;
+}
 
 export {
 	formatTime,
@@ -116,5 +142,6 @@ export {
 	formatLocation,
 	dateUtils,
 	attachImageUrl,
-	ellipsis
+	ellipsis,
+	parseLyric
 }

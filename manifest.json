@@ -2,8 +2,8 @@
     "name" : "爱影家",
     "appid" : "__UNI__42FD250",
     "description" : "爱影家",
-    "versionName" : "1.0.4",
-    "versionCode" : 104,
+    "versionName" : "1.0.10",
+    "versionCode" : 110,
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
@@ -40,8 +40,11 @@
                     "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
                     "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
                     "<uses-feature android:name=\"android.hardware.camera\"/>",
-                    "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
-                ]
+                    "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>",
+                    "<uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>"
+                ],
+                "minSdkVersion" : 21
             },
             /* ios打包配置 */
             "ios" : {
@@ -52,7 +55,7 @@
                 "ad" : {},
                 "share" : {
                     "weixin" : {
-                        "appid" : "wx1b02055e83f47f20",
+                        "appid" : "wxde9ca992b4051966",
                         "UniversalLinks" : ""
                     }
                 }

@@ -1,23 +1,14 @@
 
-http://t.yushu.im/v2/movie/top250
-https://douban.uieee.com/v2/movie/top250
-https://douban.uieee.com/v2/movie/in_theaters  //正在热映
-https://douban.uieee.com/v2/movie/coming_soon //即将上映
-https://douban.uieee.com/v2/movie/us_box //北美票房
-https://douban.uieee.com/v2/movie/new_movies //新片榜
-https://douban.uieee.com/v2/movie/weekly //本周口碑榜
+https://epg.112114.xyz/logo/cctv1.png
+https://epg.iill.top/logo/斗鱼.png
+https://github.com/vbskycn/iptv?tab=readme-ov-file
+https://github.com/ssili126/tv
+https://ghproxy.net/https://raw.githubusercontent.com/ssili126/tv/main/itvlist.txt
 
-//搜索
-https://douban.uieee.com/v2/movie/search?q=keyword
-//搜索书籍
-https://api.douban.com/v2/book/search?q=javascript&count=1
-//条目信息
-http://t.yushu.im/v2/movie/subject/3
-//获取固定数量的数据
-http://t.yushu.im/v2/movie/top250?start=0&count=20
+  //m3u8在线播放器
+  https://m3u8play.com/
 
-curl --location --request POST 'https://api.douban.com/v2/movie/imdb/tt6718170' --data-urlencode 'apikey=0ab215a8b1977939201640fa14c66bab' 
+  M3U8文件格式
+M3U8文件是指UTF-8编码格式的M3U文件。M3U文件是记录了一个索引纯文本文件，打开它时播放软件并不是播放它，而是根据它的索引找到对应的音视频文件的网络地址进行在线播放。
 
- curl --location --request POST 'https://api.douban.com/v2/movie/top250' --data-urlencode 'apikey=0ab215a8b1977939201640fa14c66bab'
- 
-  curl --location --request POST 'https://api.douban.com/v2/movie/in_theaters?city=广州&start=0&count=10' --data-urlencode 'apikey=0ab215a8b1977939201640fa14c66bab'
+M3U是一种播放多媒体列表的文件格式，它的设计初衷是为了播放音频文件，比如MP3，但是越来越多的软件现在用来播放视频文件列表，M3U也可以指定在线流媒体音频源。很多播放器和软件都支持M3U文件格式。

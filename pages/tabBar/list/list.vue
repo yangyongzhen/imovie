@@ -27,6 +27,7 @@
 			</uni-list-item>
 		 </uni-list> -->
 		 <!-- 通过 loadMore 组件实现上拉加载效果，如需自定义显示内容，可参考：https://ext.dcloud.net.cn/plugin?id=29 -->
+		<view class="content-list">
 		<uni-list>
 		  <template v-for="(item, index) in stories" :key="item.id">
 		    <!-- 如果是第一条或者日期有变化，则插入日期分割线 -->
@@ -57,6 +58,7 @@
 		    </uni-list-item>
 		  </template>
 		</uni-list>
+		</view>
 	</view>
 </template>
 
@@ -166,11 +168,14 @@
 	
 	.content {
 		width: 100%;
-		min-height: 100.1vh; // 重点
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
+	}
+	
+	.content-list {
+		min-height: 100.1vh; // 重点
 	}
 
 	.uni-list-box {

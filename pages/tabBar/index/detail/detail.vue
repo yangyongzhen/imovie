@@ -27,14 +27,14 @@
 					</view>
 				</view>
 				<view class="banner-fav">
-					<view class="my-fav">
+					<view class="my-fav" @click="goToVideoPlay">
 						<uni-icons size="18" type="videocam" color="#ff007f" />
-						<view class="box"><text class="my-fav-text" @click="goToVideoPlay">播放</text></view>
+						<view class="box"><text class="my-fav-text">播放</text></view>
 						<!-- <text class="uni-fav-text">想看</text> -->
 					</view>
-					<view class="my-fav">
+					<view class="my-fav" @click="goToshareSource">
 						<uni-icons size="18" type="link" color="#00aa00" />
-					    <view class="box"><text class="my-fav-text" @click="goToshareSource">贡献源</text></view>
+					    <view class="box"><text class="my-fav-text" >贡献源</text></view>
 						<!-- <text class="uni-fav-text">看过</text> -->
 					</view>
 				</view>

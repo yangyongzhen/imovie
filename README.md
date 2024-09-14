@@ -12,7 +12,7 @@
 ###体验地址
 由于微信小程序个人开发者无法发布资讯类小程序，于是打包为了android的app 供体验。
 
-APP下载链接：https://gitee.com/yyz116/imovie/tree/master/release/android_imovie_v1.0.0.apk
+APP下载链接：https://gitee.com/yyz116/imovie/tree/master/release/android_imovie_v1.0.10.apk
 
 或者搜索关注微信公众号[猫青年]，回复关键词"影视"获取下载链接。
 
@@ -29,7 +29,7 @@ APP下载链接：https://gitee.com/yyz116/imovie/tree/master/release/android_im
 5. 体验完整的电影类小程序功能
 
 ### 项目截图
-![首页](https://gitee.com/yyz116/imovie/raw/master/doc/home.png)
+![首页](https://gitee.com/yyz116/imovie/raw/master/doc/home.jpg)
 ![电影详情页](https://gitee.com/yyz116/imovie/raw/master/doc/detail.png)
 ![电影搜索页](https://gitee.com/yyz116/imovie/raw/master/doc/search.png)
 ![电影更多页](https://gitee.com/yyz116/imovie/raw/master/doc/more.png)
@@ -200,16 +200,6 @@ get http://175.178.126.10:8000/api/v1/zhihunews/20240720
 get http://175.178.126.10:8000/api/v1/zhihudetail/9773231
 
 ### Hot movie request /api/v1/hotmovie
-### 即将上映影视
-post https://api.douban.com/v2/movie/coming_soon
-Content-Type:application/json
-
-{
-    "start": 40,
-    "count": 10,
-    "city": "郑州",
-    "apikey": "0ab215a8b1977939201640fa14c66bab"
-}
 
 ### 即将上映
 post http://175.178.126.10:8000/api/v1/soonmovie
@@ -281,206 +271,3 @@ Content-Type:application/json
     "start": 0,
     "count": 1
 }
-
-### Below is the code of douban.http,use vscode extension REST Client to send request.
-###正在热映影视
-post https://api.douban.com/v2/movie/in_theaters
-Content-Type:application/json
- 
-{
-    "start": 0,
-    "count": 1,
-    "city": "郑州",
-    "apikey": "0ab215a8b1977939201640fa14c66bab"
-}
-
-### Top250 movie request /api/v1/top250movie
-### 豆瓣电影Top250
-post https://api.douban.com/v2/movie/top250 
-Content-Type:application/json
- 
-{
-    "start": 0,
-    "count": 2,
-    "city": "郑州",
-    "apikey": "0df993c66c0c636e29ecbb5344252a4a"
-}
-
-### new movie request /api/v1/newmovie  
-
-### 最新上映影视 
-### 0df993c66c0c636e29ecbb5344252a4a 能用
-post https://api.douban.com/v2/movie/new_movies
-Content-Type:application/json
- 
-{
-    "apikey": "0df993c66c0c636e29ecbb5344252a4a"
-}
-
-### 北美票房榜
-post https://api.douban.com/v2/movie/us_box
-Content-Type:application/json
- 
-{
-    "apikey": "0df993c66c0c636e29ecbb5344252a4a"
-}
-
-
-### search movie request /api/v1/searchmovie
-### 搜索电影
-post https://api.douban.com/v2/movie/search
-Content-Type:application/json
- 
-{
-    "q": "肖申克的救赎",
-    "start": 0,
-    "count": 1,
-    "apikey": "0ab215a8b1977939201640fa14c66bab"
-}
-
-### movie detail request /api/v1/moviedetail
-### 电影详情
-post https://api.douban.com/v2/movie/subject/36877322
-Content-Type:application/json
- 
-{
-    "apikey": "0ab215a8b1977939201640fa14c66bab"
-}   
-
-### movie comments request /api/v1/moviecomments
-### 电影评论 短评 "msg": "need_permission", "code": 1000,
-### 0df993c66c0c636e29ecbb5344252a4a 能用
-post https://api.douban.com/v2/movie/subject/1292052/comments
-Content-Type:application/json
- 
-{
-    "start": 0,
-    "count": 1,
-    "apikey": "0df993c66c0c636e29ecbb5344252a4a"
-}
-
-### weekly movie request /api/v1/weeklymovie    
-### 电影本周口碑榜 0df993c66c0c636e29ecbb5344252a4a 能用
-post https://api.douban.com/v2/movie/weekly
-Content-Type:application/json
- 
-{
-    "apikey": "0df993c66c0c636e29ecbb5344252a4a"
-}
-
-### 电影条目剧照
-post https://api.douban.com/v2/movie/subject/1292052/photos
-Content-Type:application/json
- 
-{
-    "apikey": "0df993c66c0c636e29ecbb5344252a4a"
-}
-
-### celebrity movie request /api/v1/celebritymovie
-### 影人剧照 ----不能用
-post https://api.douban.com/v2/movie/celebrity/1044707/photos
-Content-Type:application/json
- 
-{
-    "start": 0,
-    "count": 1,
-    "apikey": "0df993c66c0c636e29ecbb5344252a4a"
-}
-
-### 电影 影评
-### 0df993c66c0c636e29ecbb5344252a4a 能用
-post https://api.douban.com/v2/movie/subject/1292052/reviews
-Content-Type:application/json
- 
-{
-    "start": 0,
-    "count": 1,
-    "apikey": "0df993c66c0c636e29ecbb5344252a4a"
-}
-
-### 豆瓣音乐
-### 不能用 0df993c66c0c636e29ecbb5344252a4a "msg": "apikey is required","code": 131,
-post https://api.douban.com/v2/music/search
-Content-Type:application/json
- 
-{
-    "q": "周杰伦",
-    "start": 0,
-    "count": 1,
-    "apikey": "0df993c66c0c636e29ecbb5344252a4a"
-}
-
-###GET  https://api.douban.com/v2/music/:id
-### 豆瓣音乐详情
-### 不能用 0df993c66c0c636e29ecbb5344252a4a  "msg": "invalid_credencial2","code": 109,
-get https://api.douban.com/v2/music/104727?apikey=0df993c66c0c636e29ecbb5344252a4a
-Content-Type:application/json
- 
-{
-    "apikey": "0df993c66c0c636e29ecbb5344252a4a"
-}
-
-### 豆瓣图书详情
-### 0df993c66c0c636e29ecbb5344252a4a 能用
-post https://api.douban.com/v2/book/2129650
-Content-Type:application/json
- 
-{
-    "apikey": "0df993c66c0c636e29ecbb5344252a4a"
-}
-
-### 豆瓣图书 评论
-### 0df993c66c0c636e29ecbb5344252a4a 能用
-post https://api.douban.com/v2/book/2129650/comments
-Content-Type:application/json
- 
-{   
-    "start": 0, 
-    "count": 1,                     
-    "apikey": "0df993c66c0c636e29ecbb5344252a4a"
-}
-
-### 豆瓣图书
-### 0df993c66c0c636e29ecbb5344252a4a 能用
-post https://api.douban.com/v2/book/search
-Content-Type:application/json
- 
-{
-    "q": "西游记",
-    "start": 0,
-    "count": 1,
-    "apikey": "0df993c66c0c636e29ecbb5344252a4a"
-}
-
-### 豆瓣图书 热门
-### 不可用 "msg": "invalid_credencial2","code": 109,
-get https://api.douban.com/v2/book/top250?apikey=0b2bdeda43b5688921839c8ecb20399b
-
-
-### 知乎热报
-### 不能用 0df993c66c0c636e29ecbb5344252a4a  "msg": "invalid_credencial2","code": 109,      
-get https://news-at.zhihu.com/api/4/news/latest
-
-
-### 票房榜
-get http://shanhe.kim/api/za/piaofang.php
-
-### 免费歌曲
-get https://api.cenguigui.cn/api/music/qianqian_music.php?msg=%E5%BC%A0%E6%9D%B0&n=1
-
-### 热歌榜
-get https://api.uomg.com/api/rand.music?sort=抖音榜&format=json
-
-### 今日头条
-get http://is.snssdk.com/api/news/feed/v51/
-
-
-### 百度热搜    
-get http://top.baidu.com/buzz?b=1&c=513&fr=topbuzz_b311_c513
-
-### 微博热搜
-get https://s.weibo.com/top/summary?cate=realtimehot
-
-### 知乎热榜   
-               
-get https://top.baidu.com/board?tab=movie

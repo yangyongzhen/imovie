@@ -37,7 +37,7 @@
 		<view class="count">
 			<view class="cell" @click="goToMyfavs"> {{favCount}} <text style="color: #AAAAAA;">收藏影视</text> </view>
 			<view class="cell" @click="goToHistory"> {{historyCount}} <text style="color: #AAAAAA;">播放历史</text> </view>
-			<view class="cell"> 0 <text style="color: #AAAAAA;">关注信息</text> </view>
+			<view class="cell" @click="goToMyfavMusic">{{favMusicCount}}  <text style="color: #AAAAAA;">收藏音乐</text> </view>
 			<view class="cell"> 0 <text style="color: #AAAAAA;">我的足迹</text> </view>
 		</view>
 		<view class="grid-box">
@@ -46,7 +46,7 @@
 				  <!-- v-for 循环渲染按钮 -->
 				  <uni-grid-item v-for="(item, index) in buttons" :key="index" @click="onClickButton(item)">
 					  <view class="grid-item">
-					  	<uni-icons :type="item.icon" :color="item.color" size="28"></uni-icons>
+					  	<uni-icons :type="item.icon" :color="item.color" size="30"></uni-icons>
 					  	<text class="grid-text">{{item.text}}</text>
 					  </view>
 				  </uni-grid-item>
@@ -58,7 +58,7 @@
 			<uni-list>
 				<uni-list-item showArrow title="我的消息" ></uni-list-item>
 				<uni-list-item showArrow title="意见反馈" link to="/pages/tabBar/mine/report/report"></uni-list-item>
-				<uni-list-item showArrow title="分享链接" @click.native="onShareClick($event,1)" link></uni-list-item>
+				<uni-list-item showArrow title="分享链接" @click.native="onShareClick1($event,1)" link></uni-list-item>
 				<uni-list-item showArrow title="检查更新" @click.native="onUpdateCheck()" link></uni-list-item>
 				<uni-list-item showArrow title="关于我们"   to="/pages/about/about"></uni-list-item>
 				<uni-list-item showArrow title="用户协议"  :to="`/pages/tabBar/mine/xieyi/xieyi`"></uni-list-item>
@@ -66,20 +66,28 @@
 				<!-- <uni-list-item showArrow title="关于我们" link="navigateTo" :to="'/pages/about/about?item=1'"></uni-list-item> -->
 			</uni-list>
 		</view>
+		
+		<view class="version">
+			当前版本：{{version}}
+		</view>
+		
 	</view>
 </template>
 
 <script>
 	import favorites from '@/utils/favorites';
+	import audiofavorites from '@/utils/audiofavorites';
 	import playhistory from '@/utils/playhistory.js';
 	import { checkUpdate } from '@/api/home.js';
 	export default {
 		data() {
 			return {
 				isLoggedIn: false,
+				version: '',
 				userInfo: {},
 				favCount:0,
 				historyCount:0,
+				favMusicCount:0,
 				// 功能按钮的数据数组
 				buttons: [
 					{
@@ -93,31 +101,43 @@
 					  icon: 'videocam',
 					  text: '本地视频',
 					  color: '#ff0000',
-					  pagePath: '/pages/setting/setting'
+					  pagePath: '/pages/tabBar/mine/playlocal/playlocal'
+					},
+					{
+					  icon: 'images',
+					  text: '本地图片',
+					  color: '#aa55ff',
+					  pagePath: '/pages/tabBar/mine/playimage/playimage'
+					},
+					{
+					  icon: 'headphones',
+					  text: '在线音乐',
+					  color: '#ff007f',
+					  pagePath: '/pages/tabBar/mine/musiclist/musiclist'
 					},
 					{
 					  icon: 'link',
 					  text: '播放链接',
-					  color: '#aa55ff',
+					  color: '#5555ff',
 					  pagePath: '/pages/tabBar/mine/playvideo/playvideo'
 					},
 					{
 					  icon: 'hand-up',
 					  text: '分享APP',
 					  color: '#ffaa00',
-					  pagePath: '/pages/setting/setting'
+					  pagePath: ''
 					},
 					{
 					  icon: 'chat',
 					  text: '加入群聊',
 					  color: '#00aa00',
-					  pagePath: '/pages/setting/setting'
+					  pagePath: ''
 					},
 					{
 					  icon: 'more',
 					  text: '其他功能',
 					  color: '',
-					  pagePath: '/pages/setting/setting'
+					  pagePath: ''
 					},
 					// ...其他按钮数据
 				  ],
@@ -125,9 +145,14 @@
 		},
 		onLoad() {
 			console.log('mine onload');
+			// #ifdef APP-PLUS
+			this.version = plus.runtime.version;
+			// #endif
 			favorites.initFavorites();
+			audiofavorites.initAudioFavorites();
 			playhistory.initPlayHistory();
 			this.favCount = favorites.getFavoriteCount();
+			this.favMusicCount = audiofavorites.getAudioFavoriteCount();
 			this.historyCount = playhistory.getPlayRecordCount();
 			
 		},
@@ -135,6 +160,7 @@
 		    // 每次切换到该页面时执行的操作
 			console.log("mine onShow");
 			this.favCount = favorites.getFavoriteCount();
+			this.favMusicCount = audiofavorites.getAudioFavoriteCount();
 			this.historyCount = playhistory.getPlayRecordCount();
 		},
 		computed: {
@@ -149,13 +175,13 @@
 			      //uni.navigateTo({ url: '/pages/login/login' });
 				  uni.showToast({
 				    title: '登录暂未开放',
-				    icon: 'success',
+				    icon: 'none',
 				    duration: 2000
 				  });
 			    },
 				onClickButton(item) {
 					console.log(item.text);
-					if(item.text ==='电视直播' || item.text ==='本地视频'){
+					if(item.text ==='电视直播'){
 						uni.showToast({
 						  title: '暂未开放，敬请期待',
 						  icon: 'none',
@@ -166,11 +192,11 @@
 					if(item.text ==='分享APP'){
 						uni.showModal({
 							title: '分享链接',
-							content: '爱影app下载地址:\n' + "https://www.123pan.com/s/d27lVv-zFrSv.html",
+							content: '爱影app下载地址:\n' + "https://www.123pan.com/s/d27lVv-NjrSv",
 							showCancel:false,
 							success: res => {
 								uni.setClipboardData({
-								    data: "https://www.123pan.com/s/d27lVv-5FrSv.html",
+								    data: "https://www.123pan.com/s/d27lVv-NjrSv",
 								    success: function () {
 								      // 可以在这里添加一些提示信息，告知用户内容已复制
 								      uni.showToast({
@@ -202,6 +228,9 @@
 				},
 				goToMyfavs(){
 					uni.navigateTo({ url: '/pages/tabBar/mine/myfavs/myfavs' });
+				},
+				goToMyfavMusic(){
+					uni.navigateTo({ url: '/pages/tabBar/mine/favmusic/favmusic' });
 				},
 				goToHistory(){
 					uni.navigateTo({ url: '/pages/tabBar/mine/playhistory/playhistory' });
@@ -250,11 +279,11 @@
 					console.log("onShareClick");
 					uni.showModal({
 						title: '分享链接',
-						content: '爱影app下载地址:\n' + "https://www.123pan.com/s/d27lVv-zFrSv.html",
+						content: '爱影app下载地址:\n' + "https://www.123pan.com/s/d27lVv-NjrSv",
 						showCancel:false,
 						success: res => {
 							uni.setClipboardData({
-							    data: "https://www.123pan.com/s/d27lVv-5FrSv.html",
+							    data: "https://www.123pan.com/s/d27lVv-NjrSv",
 							    success: function () {
 							      // 可以在这里添加一些提示信息，告知用户内容已复制
 							      uni.showToast({
@@ -283,7 +312,26 @@
 						}
 					});
 					*/
-				}
+				},
+				onShareClick1($event,args){
+					console.log($event);
+					console.log("onShareClick1");
+					uni.share({
+						provider: "weixin",
+						scene: "WXSceneSession",
+						type: 0,
+						href: "http://uniapp.dcloud.io/",
+						title: "下载链接",
+						summary: "爱影家免费观影app，下载地址：https://www.123pan.com/s/d27lVv-zFrSv.html",
+						imageUrl: "https://qiniu-web-assets.dcloud.net.cn/unidoc/zh/uni@2x.png",
+						success: function (res) {
+							console.log("success:" + JSON.stringify(res));
+						},
+						fail: function (err) {
+							console.log("fail:" + JSON.stringify(err));
+						}
+					});
+				},
 			
 		}
 	};
@@ -293,12 +341,22 @@
 	Page {
 		font-size: 14rpx;
 	}
+	
+	.wrapper {
+		display: flex;
+		flex-direction: column;
+		top: 0;
+		bottom: 0;
+		width: 100%;
+		background-color: #F4F4F4;
+	}
 
 	.top {
 		width: 100%;
 		height: 300rpx;
 		// background: #23EBB9;
-		background: #2979ff;
+		//background: #2979ff;
+		background-color: rgba(85, 170, 255, 0.6);
 		padding-top: 30rpx;
 		position: relative;
 	}
@@ -306,7 +364,7 @@
 	.center {
 		width: 95%;
 		height: 260rpx;
-		background: #55aaff;
+		//background: #55aaff;
 		display: flex;
 		flex-direction: column;
 		justify-content: center; /* 水平居中 */
@@ -424,14 +482,6 @@
 		z-index: 99;
 		mix-blend-mode: screen;
 		height: 100rpx;
-	}
-
-	.wrapper {
-		position: absolute;
-		top: 0;
-		bottom: 0;
-		width: 100%;
-		background-color: #F4F4F4;
 	}
 
 	.profile {
@@ -593,7 +643,15 @@
 	}
 	.grid-text {
 	  display: block;
-	  font-size: 20rpx; 
+	  font-size: 22rpx; 
 	  padding: 10rpx 0;
+	}
+	
+	.version {
+		height: 80rpx;
+		line-height: 80rpx;
+		align-self: center;
+		padding: 20rpx;
+		color: #ccc;
 	}
 </style>

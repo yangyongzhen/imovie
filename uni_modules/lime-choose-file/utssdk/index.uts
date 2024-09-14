@@ -1,0 +1,13 @@
+export * from './interface';
+
+export function chooseFile(options: UniApp.ChooseMessageFileOption){
+	// #ifdef WEB
+	uni.chooseFile(options)
+	// #endif
+	// #ifdef MP-WEIXIN
+	uni.chooseMessageFile(options)
+	// #endif
+	// #ifndef WEB || MP-WEIXIN
+	console.error('chooseFile 不支持该平台')
+	// #endif
+}

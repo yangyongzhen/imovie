@@ -1,0 +1,83 @@
+
+/**
+ * 错误码
+ * 根据uni错误码规范要求，建议错误码以90开头，以下是错误码示例：
+ * - 9010001 错误信息1
+ * - 9010002 错误信息2
+ */
+export type ChooseFileErrorCode = 9010001 | 9010002;
+/**
+ * myApi 的错误回调参数
+ */
+export interface GeneralCallbackResult extends IUniError {
+	errCode : ChooseFileErrorCode
+};
+
+
+/** 返回选择的文件的本地临时文件对象数组 */
+export interface ChooseFile {
+	/** 选择的文件名称 */
+	name : string
+	/** 本地临时文件路径 (本地路径) */
+	path : string
+	/** 本地临时文件大小，单位 B */
+	size : number
+	/** 选择的文件的会话发送时间，Unix时间戳，工具暂不支持此属性 */
+	time : number
+	/** 选择的文件类型
+	 *
+	 * 可选值：
+	 * - 'video': 选择了视频文件;
+	 * - 'image': 选择了图片文件;
+	 * - 'file': 选择了除图片和视频的文件; */
+	type : 'video' | 'image' | 'file'
+}
+
+export type ChooseFileSuccessCallbackResult = {
+	/** 返回选择的文件的本地临时文件对象数组 */
+	tempFiles : ChooseFile[]
+	errMsg : string
+}
+
+
+/** 接口调用成功的回调函数 */
+export type ChooseFileSuccessCallback = (
+	result : ChooseFileSuccessCallbackResult
+) => void
+
+/** 接口调用失败的回调函数 */
+export type ChooseFileFailCallback = (res : GeneralCallbackResult) => void
+
+/** 接口调用结束的回调函数（调用成功、失败都会执行） */
+export type ChooseFileCompleteCallback = (
+	res : GeneralCallbackResult
+) => void
+
+export type ChooseFileOption = {
+	/**
+	 * 最多可以选择的文件数量。
+	 * @defaultValue 100
+	 */
+	count ?: number | null,
+	/**
+	 * 所选文件类型
+	 * @defaultValue all
+	 */
+	type ?: string | null,
+	/**
+	 * 根据文件拓展名过滤，每一项都不能是空字符串。默认不过滤。仅H5支持
+	 */
+	extension ?: (string[]) | null,
+	/**
+	 * 成功则返回图片的本地文件路径列表 tempFilePaths
+	 */
+	success ?: ChooseFileSuccessCallback | null,
+	/**
+	 * 接口调用失败的回调函数
+	 */
+	fail ?: ChooseFileFailCallback | null,
+	/**
+	 * 接口调用结束的回调函数（调用成功、失败都会执行）
+	 */
+	complete ?: ChooseFileCompleteCallback | null
+}

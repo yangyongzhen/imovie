@@ -1,0 +1,194 @@
+import Intent from 'android.content.Intent';
+import ClipData from 'android.content.ClipData';
+import Uri from 'android.net.Uri';
+import InputStream from 'java.io.InputStream';
+import OpenableColumns from 'android.provider.OpenableColumns';
+import Cursor from 'android.database.Cursor';
+import File from 'java.io.File';
+import FileInputStream from 'java.io.FileInputStream';
+import FileOutputStream from 'java.io.FileOutputStream';
+import BufferedOutputStream from 'java.io.BufferedOutputStream';
+import ByteArrayInputStream from 'java.io.ByteArrayInputStream';
+
+import { ChooseFileOption, ChooseFile, ChooseFileSuccessCallbackResult } from '../interface'
+import { GeneralCallbackResultImpl } from '../unierror'
+
+const REQUEST_CODE_CHOOSE_FILE : Int = 42
+let resultFunction : ((requestCode : Int, resultCode : Int, data ?: Intent) => void) | null = null
+
+
+class ChooseFileImpl implements ChooseFile {
+	name : string = ''
+	path : string = ''
+	// private _path : string = ''
+	size : number = 0
+	time : number = 0
+	type : string = 'file'
+	// private uri : Uri 
+	constructor(uri : Uri, options : ChooseFileOption) {
+		// this.uri = uri
+		this.time = Date.now()
+		this.type = this.getFileTypeFromUri(uri);
+		// this._path = uri.getPath() ?? ''
+		this.getFileInfoFromUri(uri)
+		if (this.isCache(options)) {
+			console.log('isCache')
+			this.copyFileToCache(uri)
+		}
+
+	}
+	private isCache(options : ChooseFileOption) : boolean {
+		const extension = this.getFileExtension(this.name)
+		const extensions = options.extension
+		const type = options.type ?? 'all'
+		const hasExtension = extensions != null && extension != '' && extensions.includes(extension)
+		const isVideoOrImage = ['video', 'image'].includes(type)
+		const isFileAndNotVideoOrImage = type == 'file' && !['video', 'image'].includes(this.type);
+		if ((type == 'all' || isVideoOrImage || isFileAndNotVideoOrImage) && !hasExtension) {
+			return true
+		} else {
+			return false
+		}
+	}
+	private getFileExtension(fileName : string) : string {
+		const lastDotIndex = fileName.lastIndexOf(".");
+		if (lastDotIndex == -1) {
+			return "";
+		}
+		return fileName.substring(lastDotIndex + 1);
+	}
+	private copyFileToCache(uri : Uri) {
+		const cacheDir = UTSAndroid.getAppCachePath();
+		const context = UTSAndroid.getAppContext();
+		if(cacheDir != null) {
+			const path = new File(cacheDir); 
+			if (!path.exists()) { 
+				path.mkdir(); 
+			}
+		}
+		const destFile = new File(cacheDir, this.name);
+		
+		try {
+			const inputStream = context!.getContentResolver().openInputStream(uri)
+			const outputStream = new FileOutputStream(destFile)
+			if (inputStream != null) {
+				let buffer = ByteArray(1024);
+				let c = inputStream.read(buffer)
+				while (c > 0) {
+					outputStream.write(buffer, 0, c);
+					c = inputStream.read(buffer)
+				}
+			}
+			this.path = cacheDir + this.name
+		} catch (e) {
+			
+		}
+	}
+	private getFileTypeFromUri(uri : Uri) : string {
+		const context = UTSAndroid.getAppContext();
+		let fileType = 'file'
+		let mimeType = context!.getContentResolver().getType(uri);
+		if (mimeType != null) {
+			if (mimeType.startsWith("video")) {
+				fileType = "video";
+			} else if (mimeType.startsWith("image")) {
+				fileType = "image";
+			}
+		}
+		return fileType;
+	}
+	private getFileInfoFromUri(uri : Uri) {
+		const context = UTSAndroid.getAppContext();
+		let cursor = context!.getContentResolver().query(uri, null, null, null, null);
+		if (cursor != null && cursor.moveToFirst()) {
+			this.name = cursor.getString(cursor.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME))
+			const fileSize = cursor.getLong(cursor.getColumnIndexOrThrow(OpenableColumns.SIZE));
+			this.size = Number.from(fileSize)
+			cursor.close();
+		} else if ("file".equals(uri.getScheme())) {
+			this.name = uri.getLastPathSegment() ?? '';
+			const file = new File(uri.getPath() ?? '');
+			const fileSize = file.length();
+			this.size = Number.from(fileSize)
+		}
+	}
+}
+
+
+export function chooseFile(options : ChooseFileOption) {
+	if (resultFunction != null) {
+		UTSAndroid.offAppActivityResult(resultFunction!)
+	}
+	const type = options.type ?? 'all'
+	const intent = new Intent(Intent.ACTION_GET_CONTENT);
+	if (type.equals("all") || type.equals("file")) {
+		intent.setType("*/*");
+	} else if (type.equals("video")) {
+		intent.setType("video/*");
+	} else if (type.equals("image")) {
+		intent.setType("image/*");
+	}
+	intent.addCategory(Intent.CATEGORY_OPENABLE);
+	intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, options.count == 1 ? false : true); // 允许多选
+
+	resultFunction = (requestCode : Int, resultCode : Int, data ?: Intent) => {
+		if (requestCode == REQUEST_CODE_CHOOSE_FILE) {
+			UTSAndroid.offAppActivityResult(resultFunction!);
+			if (resultCode == -1 && data != null) {
+				const clipData = data.getClipData();
+				const tempFiles : ChooseFile[] = []
+				
+				if (clipData != null) {
+					// 多选
+					// const itemCount = clipData.getItemCount();
+					// if (options.count != null && options.count! > itemCount) {
+					// 	const err = new GeneralCallbackResultImpl(9010002, `选中文件数量超过${options.count}`)
+					// 	options.fail?.(err)
+					// 	options.complete?.(err)
+					// 	return
+					// }
+					for (let i = 0; i < clipData.getItemCount(); i++) {
+						const uri = clipData.getItemAt(i.toInt()).getUri();
+						const chooseFile = new ChooseFileImpl(uri, options);
+						if(chooseFile.path !=''){
+							tempFiles.push(chooseFile)
+						}
+					}
+				} else {
+					// 单选
+					const uri = data.getData();
+					if (uri != null) {
+						const chooseFile = new ChooseFileImpl(uri, options)
+						if(chooseFile.path !='' ){
+							tempFiles.push(chooseFile)
+						}
+						
+					}
+				}
+				const count = options.count ?? Integer.MAX_VALUE // Number.MAX_VALUE
+				if(tempFiles.length > 0 && count >= tempFiles.length){
+					options.success?.({
+						tempFiles,
+						errMsg: 'chooseFile:ok'
+					} as ChooseFileSuccessCallbackResult)
+				} else {
+					const err = new GeneralCallbackResultImpl(9010002, `没有可用的文件或文件超过设置数量`)
+					options.fail?.(err)
+					options.complete?.(err)
+				}
+			} else {
+				const err = new GeneralCallbackResultImpl(9010002, `没有可用的文件`)
+				options.fail?.(err)
+				options.complete?.(err)
+			}
+		} else {
+			const err = new GeneralCallbackResultImpl(9010002, `没有可用的文件`)
+			options.fail?.(err)
+			options.complete?.(err)
+		}
+	}
+
+	UTSAndroid.onAppActivityResult(resultFunction!)
+	UTSAndroid.getUniActivity()!.startActivityForResult(Intent.createChooser(intent, "选择文件"), REQUEST_CODE_CHOOSE_FILE)
+	// UTSAndroid.getUniActivity()!.overridePendingTransition((10).toInt(), (0).toInt());
+}

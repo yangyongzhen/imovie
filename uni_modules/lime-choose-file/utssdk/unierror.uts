@@ -1,0 +1,39 @@
+/* 此规范为 uni 规范，可以按照自己的需要选择是否实现 */
+import { ChooseFileErrorCode, GeneralCallbackResult } from "./interface.uts"
+/**
+ * 错误主题
+ * 注意：错误主题一般为插件名称，每个组件不同，需要使用时请更改。
+ * [可选实现]
+ */
+export const UniErrorSubject = 'chooseFile"';
+
+
+/**
+ * 错误信息
+ * @UniError
+ * [可选实现]
+ */
+export const UniErrors : Map<ChooseFileErrorCode, string> = new Map([
+  /**
+   * 错误码及对应的错误信息
+   */
+  [9010001, 'chooseFile:ok'],
+  [9010002, 'ChooseFile:failed'],
+]);
+
+
+/**
+ * 错误对象实现
+ */
+export class GeneralCallbackResultImpl extends UniError implements GeneralCallbackResult {
+
+  /**
+   * 错误对象构造函数
+   */
+  constructor(errCode : ChooseFileErrorCode, errMsg: string|null = null) {
+    super();
+    this.errSubject = UniErrorSubject;
+    this.errCode = errCode;
+    this.errMsg = errMsg ?? UniErrors[errCode] ?? "";
+  }
+}
