@@ -48,10 +48,6 @@ APP下载链接：https://gitee.com/yyz116/imovie/tree/master/release/android_im
 |![QQ交流群](https://gitee.com/yyz116/imovie/raw/master/doc/qun.png)|![微信交流群](https://gitee.com/yyz116/imovie/raw/master/doc/qrcode.png)|
 | QQ群号：92381027 |微信号：yongzhen1111|
 
-### `开源不易，需要花费很多精力，打个赏吧`
-| `微信打赏码`         | `支付宝打赏码`                  |
-| ----------------------------|--------------------------- |
-|![微信打赏二维码](https://gitee.com/yyz116/imovie/raw/master/doc/pay.jpg)
 
 ### 常见问题
 1.如何运行？
